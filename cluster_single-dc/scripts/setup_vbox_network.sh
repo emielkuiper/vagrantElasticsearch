@@ -17,7 +17,7 @@ ID=`which id`
 ELASTIC_NETWORK_IP="172.28.28.1"
 ELASTIC_NETWORK_MASK="255.255.255.0"
 
-CHECK_AGAINST_EXISTING_NETWORKS=`$VBOXMANAGE list hostonlyifs | grep "$ELASTIC_NETWORK_IP"`
+CHECK_AGAINST_EXISTING_NETWORKS=`$VBOXMANAGE -q list hostonlyifs | grep "$ELASTIC_NETWORK_IP"`
 
 # Script should be run with root permissions
 USERID=`$ID`
@@ -34,7 +34,7 @@ if   [[ "$USERID" =~ "uid=0(root)" ]]; then
         echo "Newly created interface is $NEWINTERFACE"
 
         # Set IP address for new interface
-        $VBOXMANAGE -q hostonlyif ipconfig "$NEWINTERFACE" --ip $ELASTIC_NETWORK_IP --netmask $ELASTIC_NETWORK_MASK
+        $VBOXMANAGE -q hostonlyif ipconfig "$NEWINTERFACE" --dhcp --ip $ELASTIC_NETWORK_IP --netmask $ELASTIC_NETWORK_MASK
 
         # Details for interface
         echo ""
