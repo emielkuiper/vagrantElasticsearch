@@ -1,0 +1,11 @@
+# elasticsearch.yml
+
+
+elasticsearch_cluster_name: 		"local_test_cluster"
+
+elasticsearch_path_data: 		"/var/lib/elasticsearch"
+elasticsearch_path_logs: 		"/var/log/elasticsearch"
+elasticsearch_bootstrap_memory_lock:	"true"
+elasticsearch_network_host: 		"0.0.0.0"
+
+

@@ -5,9 +5,8 @@
   become_method: sudo
 
 
-
-
   roles:
+    - role_elasticsearch
     - role_beats
     - role_kibana
 
