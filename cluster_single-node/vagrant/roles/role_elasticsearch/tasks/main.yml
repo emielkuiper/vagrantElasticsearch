@@ -28,3 +28,16 @@
     tags:
       - elasticsearch-configfiles
 
+###
+### Elasticsearch jvm.options file
+###
+
+  - name: Templating JVM config file
+    template:
+      src: templates/jvm.options.j2
+      dest: "/etc/elasticsearch/jvm.options"
+    notify:
+      - restart elasticsearch 
+    tags:
+      - elasticsearch-configfiles
+
