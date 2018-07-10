@@ -4,7 +4,16 @@
   become_user: root
   become_method: sudo
 
-  tasks:
+
+
+
+  roles:
+    - role_beats
+    - role_kibana
+
+
+
+#  tasks:
 
 #############################################################################
 
@@ -12,37 +21,37 @@
 ### Start services at boot time
 ###
 
-  - name: Start and enable services at boot time
-    service:
-       name: "{{ item }}"
-       state: started
-       enabled: True
-    with_items:
-       - elasticsearch
-       - logstash
-       - kibana
-    when:
-       - ansible_os_family == "RedHat"
-       - ansible_distribution_major_version == "7"
-
-#############################################################################
+#  - name: Start and enable services at boot time
+#    service:
+#       name: "{{ item }}"
+#       state: started
+#       enabled: True
+#    with_items:
+#       - elasticsearch
+#       - logstash
+#       - kibana
+#    when:
+#       - ansible_os_family == "RedHat"
+#       - ansible_distribution_major_version == "7"
+#
+##############################################################################
 
 ###
 ### Start beats at boot time
 ###
 
-  - name: Start and enable services at boot time
-    service:
-       name: "{{ item }}"
-       state: started
-       enabled: True
-    with_items:
-       - filebeat
-       - heartbeat-elastic
-       - metricbeat
-       - packetbeat
-    when:
-       - ansible_os_family == "RedHat"
-       - ansible_distribution_major_version == "7"
+#  - name: Start and enable services at boot time
+#    service:
+#       name: "{{ item }}"
+#       state: started
+#       enabled: True
+#    with_items:
+#       - filebeat
+#       - heartbeat-elastic
+#       - metricbeat
+#       - packetbeat
+#    when:
+#       - ansible_os_family == "RedHat"
+#       - ansible_distribution_major_version == "7"
 
 #############################################################################
