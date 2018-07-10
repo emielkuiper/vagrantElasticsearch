@@ -1,0 +1,72 @@
+#############################################################################
+###
+### Display IP addresses of node
+###
+
+  - name: ES Service IP address
+    debug:
+      msg="ES service IP address of current host is {{ item }}"
+    with_items:
+      - "{{ es_service_ip_address }}"
+
+  - name: ES Management IP address
+    debug:
+      msg="ES management IP address of current host is {{ item }}"
+    with_items:
+      - "{{ es_mgmt_ip_address }}"
+
+#  - name: Setting host fact for service IP address
+#    set_fact:
+#      service_ip: >
+#        {{ hostvars[inventory_hostname]['ansible_' + es_service_interface].ipv4.address }}
+#
+#  - name: Display fact
+#    debug:
+#      msg="{{ service_ip }}"
+#
+#  - name: Display IP master 01
+#    debug:
+#      msg="{{ ip_master_01 }}"
+#
+#  - name: Display IP master 02
+#    debug:
+#      msg="{{ ip_master_02 }}"
+#
+#  - name: Display IP master 03
+#    debug:
+#      msg="{{ ip_master_03 }}"
+
+
+#############################################################################
+###
+### Template configuration files
+###
+
+  - name: Copy elasticsearch.yml config file
+    template:
+      src: templates/elasticsearch.yml.j2
+      dest: "/etc/elasticsearch/elasticsearch.yml"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    tags:
+      - elasticsearch-configfiles
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+
+
+#############################################################################
+###
+### Start Elasticsearch daemon at boot time
+###
+
+  - name: Start and enable services at boot time
+    service:
+      name: "{{ item }}"
+      state: restarted
+      enabled: True
+    with_items:
+      - elasticsearch
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"

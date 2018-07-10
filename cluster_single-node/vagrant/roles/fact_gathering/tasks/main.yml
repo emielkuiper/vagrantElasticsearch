@@ -1,0 +1,12 @@
+#############################################################################
+###
+### Fact gathering
+###
+
+
+  - name: Gathering facts
+    debug:
+      msg="Gathering facts..."
+
+#  - name: Empty task to force fact gathering on ALL hosts
+#    tasks: [ ]

@@ -1,0 +1,10 @@
+###
+### Terraform Oracle Cloud
+###
+
+  - name: Terraforming Oracle Cloud
+    terraform: 
+      project_path: '/home/beheer/ansible-playbooks/deployment_automation_OPC'
+      binary_path: /usr/bin/terraform
+      plan_file: '/home/beheer/ansible-playbooks/deployment_automation_OPC/terraform.tfstate'
+      state: planned
