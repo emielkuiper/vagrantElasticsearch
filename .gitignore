@@ -40,7 +40,7 @@ Thumbs.db
 # Ansible retry files#
 ######################
 *.retry
-
+ansible-vault.yml
 
 # Vagrant files etc#
 ######################
