@@ -1,0 +1,19 @@
+- name: restart elasticsearch
+  service:
+    name: elasticsearch
+    state: restarted
+
+- name: stop elasticsearch
+  service:
+    name: elasticsearch
+    state: stopped
+
+- name: start elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+
+- name: restart kibana
+  service:
+    name: kibana
+    state: restarted

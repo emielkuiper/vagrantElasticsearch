@@ -1,0 +1,39 @@
+###
+### NOTE!!!!
+### Passwords are noted here in plaintext because this is a DEV system!
+### In production use something like ansible-vault!!!
+###
+
+
+### Temporary bootstrap password
+password_bootstrap:		"1234"
+
+### Native accounts
+password_kibana:                "kibana"
+password_logstash_system:       "logstash"
+password_beats_system:          "ebeats"
+password_elastic:               "elastic"
+
+### Useraccounts
+password_administrator:         "administrator"
+
+
+
+###
+### Various variables
+###
+
+# elasticsearch.yml
+elasticsearch_cluster_name: 		"local_test_cluster"
+elasticsearch_path_data: 		"/var/lib/elasticsearch"
+elasticsearch_path_logs: 		"/var/log/elasticsearch"
+
+# Setting to false for use in development system
+# In production ALWAYS set this to "true"
+elasticsearch_bootstrap_memory_lock:	"false"
+
+elasticsearch_network_host: 		"0.0.0.0"
+
+# jvm.options
+jvm_initial_heap_size:			"512m"
+jvm_maximum_heap_size:			"512m"

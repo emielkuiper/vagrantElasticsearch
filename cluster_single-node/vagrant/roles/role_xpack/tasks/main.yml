@@ -1,0 +1,259 @@
+###
+### Start X-Pack 30-day trial
+###
+
+### Works only if the default basic license is active.
+### All commands regarding actovating the trial are unauthenticated.
+
+  - name: Wait for port 9200 to become available
+    wait_for:
+      host: 127.0.0.1
+      port: 9200
+      state: started
+      delay: 5
+      connect_timeout: 5
+      timeout: 60
+
+  - name: Get current license type
+    shell: curl -s -XGET '127.0.0.1:9200/_xpack/license' | jq -r '.license.type'
+    register: xpack_license_type
+    tags:
+      - xpack-license
+
+  - name: Get current license status
+    shell: curl -s -XGET '127.0.0.1:9200/_xpack/license' | jq -r '.license.status'
+    register: xpack_license_status
+    tags:
+      - xpack-license
+
+  - name: Start Elasticsearch 30 days trial
+    shell: curl -s -XPOST '127.0.0.1:9200/_xpack/license/start_trial?acknowledge=true' | jq '.'
+    register: xpack_license_trial
+    when:
+      - "'basic' in xpack_license_type.stdout_lines"
+      - "'active' in xpack_license_status.stdout_lines"
+    tags:
+      - xpack-license
+
+
+
+###
+### Pushing new config for use with X-Pack
+###
+
+  - name: Copying new elasticsearch.yml config file enabling X-Pack
+    template:
+      src: templates/elasticsearch.yml.j2
+      dest: "/etc/elasticsearch/elasticsearch.yml"
+    tags:
+      - xpack-elasticsearch-configfiles
+
+
+  - name: Copying new kibana.yml config file enabling X-Pack
+    template:
+      src: templates/kibana.yml.j2
+      dest: "/etc/kibana/kibana.yml"
+    tags:
+      - xpack-kibana-configfiles
+
+
+  - name: Restarting Elasticsearch and Kibana
+    service:
+      name: "{{ item }}"
+      state: restarted
+    with_items:
+      - elasticsearch
+      - kibana
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+
+
+
+  - name: Wait for port 9200 to become available
+    wait_for:
+      host: 127.0.0.1
+      port: 9200
+      state: started
+      delay: 5
+      connect_timeout: 5
+      timeout: 60
+
+###
+### Setting passwords for all native users: elastic, kibana, logstash_system and beats_system
+### Passwords are being stored in the vars dir!!
+###
+
+  - name: Check if elastic user can log in without errors and if bootstrap password needs to be set
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/_authenticate?pretty
+      method: GET
+      body_format: json
+      return_content: yes
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_elastic_password_status
+    ignore_errors: yes
+
+
+  - name: Stopping Elasticsearch
+    debug:
+      msg: "NOTIFICATION: Elasticsearch process will be stopped to allow bootstrap password to be set"
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+      - xpack_elastic_password_status.json.error.type == 'security_exception'
+    ignore_errors: yes
+
+
+  - name: Actually stopping Elasticsearch
+    service:
+      name: "{{ item }}"
+      state: stopped
+    with_items:
+      - elasticsearch
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+      - xpack_elastic_password_status.json.error.type == 'security_exception'
+    ignore_errors: yes
+
+
+  - name: Setting bootstrap password
+    shell: echo "{{ password_bootstrap }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add "bootstrap.password" --force --stdin
+    register: xpack_bootstrap_password_set
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+      - xpack_elastic_password_status.json.error.type == 'security_exception'
+    tags:
+      - xpack-bootstrap
+    ignore_errors: yes
+
+
+  - name: Checking bootstrap password
+    shell: /usr/share/elasticsearch/bin/elasticsearch-keystore list
+    register: xpack_bootstrap_password_list
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+      - xpack_elastic_password_status.json.error.type == 'security_exception'
+    tags:
+      - xpack-bootstrap-list
+    ignore_errors: yes
+
+
+  - name: Starting Elasticsearch after setting bootstrap password
+    service:
+      name: "{{ item }}"
+      state: started
+    with_items:
+      - elasticsearch
+    when:
+      - ansible_os_family == "RedHat"
+      - ansible_distribution_major_version == "7"
+      - xpack_elastic_password_status.json.error.type == 'security_exception'
+      - "'bootstrap.password' in xpack_bootstrap_password_list.stdout_lines"
+    ignore_errors: yes
+
+
+  - name: Wait for port 9200 to become available
+    wait_for:
+      host: 127.0.0.1
+      port: 9200
+      state: started
+      delay: 5
+      connect_timeout: 5
+      timeout: 60
+
+
+  - name: Check if elastic user is OK now 
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/_authenticate?pretty
+      method: GET
+      body_format: json
+      return_content: yes
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: elastic_ok
+    ignore_errors: yes
+
+  - name: Setting password for user elastic using bootstrap password
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/user/elastic/_password
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{ \"password\":\"{{ password_elastic }}\" }"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_bootstrap }}"
+      force_basic_auth: yes
+    register: xpack_elastic_password_reset
+    ignore_errors: yes
+
+
+  - name: Setting password for user kibana using final elasticsearch user
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/user/kibana/_password
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{ \"password\":\"{{ password_kibana }}\" }"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_kibana_password_reset
+    ignore_errors: yes
+
+
+  - name: Setting password for user logstash_system using final elasticsearch user
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/user/logstash_system/_password
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{ \"password\":\"{{ password_logstash_system }}\" }"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_logstash_password_reset
+    ignore_errors: yes
+
+
+  - name: Setting password for user beats_system using final elasticsearch user
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/user/beats_system/_password
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{ \"password\":\"{{ password_beats_system }}\" }"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_beats_password_reset
+    ignore_errors: yes
+
+
+  - name: Setting password for administrator using final elasticsearch user
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/user/administrator
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{ \"password\" : \"{{ password_administrator }}\", \"roles\" : [ \"superuser\" ], \"full_name\" : \"Administrator\", \"email\" : \"admin@example.com\" }"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_beats_password_reset
+    ignore_errors: yes
+
+
+
+
