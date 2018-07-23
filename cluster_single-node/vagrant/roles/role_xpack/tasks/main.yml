@@ -251,9 +251,41 @@
       user: "elastic"
       password: "{{ password_elastic }}"
       force_basic_auth: yes
-    register: xpack_beats_password_reset
+    register: xpack_administrator_password_reset
     ignore_errors: yes
 
 
+###
+### Adding additional user kibana_extended and role kibana_system_extended
+### Because privileges are missing from the default install
+###
 
+  - name: Creating additional role kibana_system_extended
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/role/kibana_system_extended
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{{ lookup('file','role_kibana_system_extended.json') }}"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_create_role
+    ignore_errors: yes
+
+
+  - name: Creating additional user kibana_extended
+    uri:
+      url: http://127.0.0.1:9200/_xpack/security/user/kibana_extended
+      method: PUT
+      body_format: json
+      return_content: yes
+      body: "{{ lookup('file','user_kibana_extended.json') }}"
+      status_code: 200
+      user: "elastic"
+      password: "{{ password_elastic }}"
+      force_basic_auth: yes
+    register: xpack_create_user
+    ignore_errors: yes
 
