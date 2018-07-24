@@ -3,6 +3,9 @@
 ###
 
   - name: Start and enable beats at boot time
+    template:
+      src: templates/metricbeat.yml.j2
+      dest: "/etc/metricbeat/metricbeat.yml"
     service:
        name: "{{ item }}"
        state: started
