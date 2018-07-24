@@ -3,9 +3,6 @@
 ###
 
   - name: Start and enable beats at boot time
-    template:
-      src: templates/metricbeat.yml.j2
-      dest: "/etc/metricbeat/metricbeat.yml"
     service:
        name: "{{ item }}"
        state: started
@@ -18,3 +15,12 @@
     when:
        - ansible_os_family == "RedHat"
        - ansible_distribution_major_version == "7"
+
+  - name: Templating Elasticsearch config file
+    template:
+      src: templates/metricbeat.yml.j2
+      dest: "/etc/metricbeat/metricbeat.yml"
+    notify:
+     - restart metricbeat
+   tags:
+     - metricbeat-configfiles
