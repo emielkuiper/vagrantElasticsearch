@@ -22,5 +22,5 @@
       dest: "/etc/metricbeat/metricbeat.yml"
     notify:
      - restart metricbeat
-   tags:
+    tags:
      - metricbeat-configfiles
