@@ -32,8 +32,8 @@
     group: "elasticsearch"
 
     # jvm.options
-    jvm_initial_heap_size:			"512m"
-    jvm_maximum_heap_size:			"512m"
+    jvm_initial_heap_size:   "512m"
+    jvm_maximum_heap_size:   "512m"
 
 
   roles:
