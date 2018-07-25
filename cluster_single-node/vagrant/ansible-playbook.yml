@@ -9,4 +9,4 @@
     - role_elasticsearch
     - role_xpack
     - role_beats
-    - role_kibana
+    # - role_kibana
