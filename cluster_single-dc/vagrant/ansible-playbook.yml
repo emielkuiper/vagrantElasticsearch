@@ -14,8 +14,10 @@
 
     # bootstrap_memory_lock setting to false for use in development system
     bootstrap_memory_lock:    "false"
-    es_service_ip_address:    "0.0.0.0"
     es_network_hosts:         "{{ groups['es_masternodes'] | to_json }}"
+    es_service_interface: "eth1"
+    es_service_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + es_service_interface].ipv4.address }}"
+    # es_service_ip_address:    "0.0.0.0"
 
     # To create a dedicated master-eligible node when X-Pack is installed, set:
     node_master:       true
