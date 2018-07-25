@@ -1,0 +1,25 @@
+###
+### Start Logstash at boot time
+###
+
+  - name: Start and enable Logstash at boot time
+    service:
+       name: "{{ item }}"
+       state: started
+       enabled: True
+    with_items:
+       - logstash
+    when:
+       - ansible_os_family == "RedHat"
+       - ansible_distribution_major_version == "7"
+
+  - name: Template Logstash configuration files
+    template:
+      src: "{{ item }}.j2"
+      dest: "/etc/logstash/conf.d/{{ item }}"
+    with_items:
+      - 01-filebeats.conf
+      - 02-metricbeat.conf
+      - 03-packetbeat.conf
+      - 04-heartbeat.conf
+    notify: restart logstash

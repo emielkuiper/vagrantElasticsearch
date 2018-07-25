@@ -49,3 +49,17 @@
 
      # Masternode only runs Elasticsearch as master-eligable node
      - role: masternode
+
+- hosts:          es_logstashnodes
+  remote_user:    vagrant
+  become:         true
+  become_user:    root
+  become_method:  sudo
+  gather_facts:   true
+
+  vars:
+
+    es_data_hosts:         "{{ groups['es_datanodes'] | to_json }}"
+
+  roles:
+    - role: role_logstash
