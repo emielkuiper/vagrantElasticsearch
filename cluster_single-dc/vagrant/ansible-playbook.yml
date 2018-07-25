@@ -1,0 +1,42 @@
+- hosts:         es_masternodes
+  remote_user:   vagrant
+  become:        true
+  become_user:   root
+  become_method: sudo
+  gather_facts:  true
+
+  vars:
+
+    # Basic settings
+    clustername:              "cluster_dc1_dev"
+    path_data:                "/var/lib/elasticsearch"
+    path_logs:                "/var/log/elasticsearch"
+
+    # bootstrap_memory_lock setting to false for use in development system
+    bootstrap_memory_lock:    "false"
+    es_service_ip_address:    "0.0.0.0"
+    es_network_hosts:         "{{ groups['es_masternodes'] | to_json }}"
+
+    # To create a dedicated master-eligible node when X-Pack is installed, set:
+    node_master:       true
+    node_data:         false
+    node_ingest:       false
+    node_ml:           false
+    xpack_ml_enabled:  true
+
+    # Master node majority
+    discovery_zen_minimum_master_nodes: 2
+
+    # Ownership and permissions for configfiles
+    owner: "root"
+    group: "elasticsearch"
+
+    # jvm.options
+    jvm_initial_heap_size:			"512m"
+    jvm_maximum_heap_size:			"512m"
+
+
+  roles:
+
+     # Masternode only runs Elasticsearch as master-eligable node
+     - role: masternode
