@@ -1,4 +1,118 @@
 ###
+### Elasticsearch TLS setup
+###
+
+  - name: Installing unzip as dependancy for unarchive operations
+    yum:
+       name: "{{ item }}"
+       state: latest
+       update_cache: yes
+    with_items:
+       - unzip
+    when:
+       - ansible_os_family == "RedHat"
+       - ansible_distribution_major_version == "7"
+
+  - name: Check if CA zip file exists
+    stat:
+      path=/etc/elasticsearch/ca/elasticstack.zip
+    register: ca_file_zip
+
+  - name: Check if CA P12 file exists
+    stat:
+      path=/etc/elasticsearch/ca/elasticstack/elasticstack.p12
+    register: ca_file_p12
+
+  - name: Create Elastic CA dir on first master server if CA zip file not present
+    file:
+      path: /etc/elasticsearch/ca
+      state: directory
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: 0750
+    when:
+      - inventory_hostname == groups['es_masternodes'][0]
+      - ca_file_zip.stat.exists == false
+    tags:
+      - elasticsearch-ca
+
+  - name: Templating Elasticsearch CA file
+    template:
+      src: templates/elastic-ca.j2
+      dest: "/etc/elasticsearch/ca/elastic-ca.yml"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: 0750
+    when:
+      - inventory_hostname == groups['es_masternodes'][0]
+      - ca_file_zip.stat.exists == false
+    tags:
+      - elasticsearch-ca
+
+  - name: Execute CA generation on first master server if CA zipfile not present
+    command: /usr/share/elasticsearch/bin/elasticsearch-certutil cert --silent --in /etc/elasticsearch/ca/elastic-ca.yml --out /etc/elasticsearch/ca/{{ elastic_ca_archive_name }}.zip --pass {{ elastic_ca_password }}
+    register: elastic_ca_state
+    ignore_errors: true
+    when:
+      - inventory_hostname == groups['es_masternodes'][0]
+      - ca_file_zip.stat.exists == false
+    tags:
+      - elasticsearch-ca
+
+  - name: Fetching CA zip file from first master server if CA zip file IS present
+    fetch:
+      src: "/etc/elasticsearch/ca/elasticstack.zip"
+      dest: "files/elasticstack.zip"
+      flat: yes
+    when:
+      - inventory_hostname == groups['es_masternodes'][0]
+      - ca_file_zip.stat.exists == true
+    tags:
+      - elasticsearch-ca
+
+  - name: Create Elastic CA dir on remaining master servers if not present
+    file:
+      path: /etc/elasticsearch/ca
+      state: directory
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: 0750
+    tags:
+      - elasticsearch-ca
+
+  - name: Unpacking P12 bundle on all master servers
+    unarchive:
+      src: "files/elasticstack.zip"
+      dest: "/etc/elasticsearch/ca"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    when:
+      - ca_file_p12.stat.exists == false
+    tags:
+      - elasticsearch-ca
+
+  - name: Check Execute CA generation on first master server if CA zipfile not present
+    command: /usr/share/elasticsearch/bin/elasticsearch-keystore list
+    register: elastic_keystore_list
+    tags:
+      - elasticsearch-ca
+
+  - name: Add keystore password if not present in keystore
+    command: echo "{{ elastic_ca_password }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add --silent --stdin xpack.security.transport.ssl.keystore.secure_password
+#    when:
+#      - "'xpack.security.transport.ssl.keystore.secure_password' not in elastic_keystore_list.stdout_lines"
+    tags:
+      - elasticsearch-ca
+
+  - name: Add truststore password if not present in keystore
+    command: echo "{{ elastic_ca_password }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add --silent --stdin xpack.security.transport.ssl.truststore.secure_password
+#    when:
+#      - "'xpack.security.transport.ssl.truststore.secure_password' not in elastic_keystore_list.stdout_lines"
+    tags:
+      - elasticsearch-ca
+
+
+###
 ### Elasticsearch config file
 ###
 
@@ -35,6 +149,3 @@
        enabled: True
     with_items:
        - elasticsearch
-    when:
-    #   - ansible_os_family == "RedHat"
-    #   - ansible_distribution_major_version == "7"

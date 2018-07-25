@@ -40,6 +40,11 @@
     elastic_ca_archive_name: "elasticstack"
     elastic_ca_password: "1234"
 
+    xpack_security_transport_ssl_enabled: true
+    xpack_security_transport_ssl_verification_mode: certificate
+    xpack_security_transport_ssl_keystore_path: /etc/elasticsearch/ca/elasticstack/elasticstack.p12
+    xpack_security_transport_ssl_truststore_path: /etc/elasticsearch/ca/elasticstack/elasticstack.p12
+
     # jvm.options
     jvm_initial_heap_size:   "512m"
     jvm_maximum_heap_size:   "512m"
@@ -49,17 +54,3 @@
 
      # Masternode only runs Elasticsearch as master-eligable node
      - role: masternode
-
-- hosts:          es_logstashnodes
-  remote_user:    vagrant
-  become:         true
-  become_user:    root
-  become_method:  sudo
-  gather_facts:   true
-
-  vars:
-
-    es_data_hosts:         "{{ groups['es_datanodes'] | to_json }}"
-
-  roles:
-    - role: role_logstash
