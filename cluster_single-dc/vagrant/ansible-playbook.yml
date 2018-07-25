@@ -59,7 +59,7 @@
 
   vars:
     es_data_ports:         "9200"
-    es_data_hosts:         "{{ groups['es_datanodes'][':' + es_data_ports] | to_json }}"
+    es_data_hosts:         "{{ groups['es_datanodes']+[':' + es_data_ports] | to_json }}"
 
   roles:
     - role: role_logstash
