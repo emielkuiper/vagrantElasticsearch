@@ -1,0 +1,13 @@
+input {
+  beats {
+    port => {{ logstash_listen_port_packetbeat }}
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => {{ es_data_hosts }}
+    index => "DC1-packetbeat-%{+YYYY.MM.dd}"
+    document_type => "%{[@metadata][type]}"
+  }
+}
