@@ -25,6 +25,7 @@
     node_ingest:       false
     node_ml:           false
     xpack_ml_enabled:  true
+    xpack_security_enabled: yes
 
     # Master node majority
     discovery_zen_minimum_master_nodes: 2
@@ -32,6 +33,12 @@
     # Ownership and permissions for configfiles
     owner: "root"
     group: "elasticsearch"
+
+    # TLS parameters
+    #
+    # zip archive name with P12 file
+    elastic_ca_archive_name: "elasticstack"
+    elastic_ca_password: "1234"
 
     # jvm.options
     jvm_initial_heap_size:   "512m"
