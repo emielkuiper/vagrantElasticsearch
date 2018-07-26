@@ -98,16 +98,16 @@
       - elasticsearch-ca
 
   - name: Add keystore password if not present in keystore
-    command: echo "{{ elastic_ca_password }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add --silent --stdin xpack.security.transport.ssl.keystore.secure_password
-#    when:
-#      - "'xpack.security.transport.ssl.keystore.secure_password' not in elastic_keystore_list.stdout_lines"
+    shell: echo "{{ elastic_ca_password }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add --silent --stdin xpack.security.transport.ssl.keystore.secure_password
+    when:
+      - "'xpack.security.transport.ssl.keystore.secure_password' not in elastic_keystore_list.stdout_lines"
     tags:
       - elasticsearch-ca
 
   - name: Add truststore password if not present in keystore
-    command: echo "{{ elastic_ca_password }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add --silent --stdin xpack.security.transport.ssl.truststore.secure_password
-#    when:
-#      - "'xpack.security.transport.ssl.truststore.secure_password' not in elastic_keystore_list.stdout_lines"
+    shell: echo "{{ elastic_ca_password }}" | /usr/share/elasticsearch/bin/elasticsearch-keystore add --silent --stdin xpack.security.transport.ssl.truststore.secure_password
+    when:
+      - "'xpack.security.transport.ssl.truststore.secure_password' not in elastic_keystore_list.stdout_lines"
     tags:
       - elasticsearch-ca
 
