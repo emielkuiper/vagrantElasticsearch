@@ -3,6 +3,3 @@ logstash_listen_port_filebeat: 5401
 logstash_listen_port_metricbeat: 5402
 logstash_listen_port_packetbeat: 5403
 logstash_listen_port_heartbeat: 5404
-
-logstash_install_plugins:
-  - logstash-input-beats
