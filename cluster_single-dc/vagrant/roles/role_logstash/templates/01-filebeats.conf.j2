@@ -7,7 +7,7 @@ input {
 output {
   elasticsearch {
     hosts => {{ es_data_hosts }}
-    index => "DC1-filebeat-%{+YYYY.MM.dd}"
+    index => "{{logstash_datacenter}}-filebeat-%{+YYYY.MM.dd}"
     document_type => "%{[@metadata][type]}"
   }
 }

@@ -20,8 +20,8 @@
 
   roles:
 
-     # Set up TLS for transport protocol on ALL cluster nodes
-     - role: role_tls
+    # Set up TLS for transport protocol on ALL cluster nodes
+    - role: role_tls
 
 
 
@@ -79,8 +79,8 @@
 
   roles:
 
-     # Masternode only runs Elasticsearch as master-eligable node
-     - role: role_masternodes
+    # Masternode only runs Elasticsearch as master-eligable node
+    - role: role_masternodes
 
 - hosts:          es_logstashnodes
   remote_user:    vagrant
