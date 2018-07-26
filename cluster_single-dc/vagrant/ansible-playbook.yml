@@ -53,7 +53,7 @@
   roles:
 
      # Masternode only runs Elasticsearch as master-eligable node
-     - role: masternode
+     - role: role_masternodes
 
 - hosts:          es_logstashnodes
   remote_user:    vagrant
