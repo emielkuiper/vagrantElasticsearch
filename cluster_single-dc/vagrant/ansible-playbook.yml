@@ -106,8 +106,8 @@
 #Assumes 1 kibana host and 1 elastic client, need to add some logic to deal with >1
   vars:
     kibana_server_port:                   "5601"
-    kibana_server_host:                   "{{ groups['es_kibananodes'] | to_json }}"
-    kibana_elasticsearch_url:             "{{ groups['es_clientnodes'] | to_json }}"
+    kibana_server_host:                   "{{ groups['es_kibananodes'][0]}}"
+    kibana_elasticsearch_url:             "{{ groups['es_clientnodes'][0]}}"
 #Temporary, will use vault in future
     password_kibana:                      "kibana"
 
