@@ -1,3 +1,30 @@
+- hosts:         es_masternodes, es_datanodes, es_clientnodes
+  remote_user:   vagrant
+  become:        true
+  become_user:   root
+  become_method: sudo
+  gather_facts:  true
+
+  vars:
+
+    # Ownership and permissions for configfiles
+    owner: "root"
+    group: "elasticsearch"
+
+    # TLS parameters
+    #
+    # zip archive name with P12 file
+    elastic_ca_archive_name: "elasticstack"
+    elastic_ca_password: "1234"
+
+
+  roles:
+
+     # Set up TLS for transport protocol on ALL cluster nodes
+     - role: role_tls
+
+
+
 - hosts:         es_masternodes
   remote_user:   vagrant
   become:        true
