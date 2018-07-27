@@ -19,7 +19,6 @@
 
 
   roles:
-
     # Set up TLS for transport protocol on ALL cluster nodes
     - role: role_tls
 
@@ -76,9 +75,19 @@
     jvm_initial_heap_size:   "512m"
     jvm_maximum_heap_size:   "512m"
 
+    ### Temporary bootstrap password
+    password_bootstrap:		"1234"
+
+    ### Native accounts
+    password_kibana:                "kibana"
+    password_logstash_system:       "logstash"
+    password_beats_system:          "ebeats"
+    password_elastic:               "elastic"
+
+    ### Useraccounts
+    password_administrator:         "administrator"
 
   roles:
-
     # Masternode only runs Elasticsearch as master-eligable node
     - role: role_masternodes
 
