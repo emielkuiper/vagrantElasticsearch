@@ -47,3 +47,7 @@ ansible-vault.yml
 .vagrant
 .docker
 package.box
+
+# Other files        #
+######################
+*.bak
