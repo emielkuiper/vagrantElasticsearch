@@ -1,0 +1,53 @@
+#####
+##### Elasticsearch FILE realm authentication
+#####
+
+  - name: Create users file if it does not exist
+    file:
+      path: /etc/elasticsearch/users
+      state: file
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: 0555
+    tags:
+      - elasticsearch-filerealm
+
+  - name: Create users_roles file if it does not exist
+    file:
+      path: /etc/elasticsearch/users_roles
+      state: file
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: 0555
+    tags:
+      - elasticsearch-filerealm
+
+  #List current users
+  - name: List existing users in users file
+    shell: cat /etc/elasticsearch/users | awk -F':' '{print $1}'
+    register: current_file_users
+    changed_when: False
+    tags:
+      - elasticsearch-filerealm
+
+###
+### NOTE: username  es_administrator is hardcoded!
+###
+
+  #Add users
+  - name: Add {{ username_es_administrator}} user to users file if not present
+    command: /usr/share/elasticsearch/bin/elasticsearch-users useradd {{ username_es_administrator }} -p {{ password_es_administrator }}
+    when:
+      - "'es_administrator' not in current_file_users.stdout_lines"
+    no_log: True
+    tags:
+      - elasticsearch-filerealm
+
+  #Add superuser role
+  - name: Grant superuser privileges to {{ username_es_administrator }}
+    command: /usr/share/elasticsearch/bin/elasticsearch-users roles {{ username_es_administrator }} -a superuser
+    when:
+      - "'es_administrator' not in current_file_users.stdout_lines"
+    no_log: True
+    tags:
+      - elasticsearch-filerealm

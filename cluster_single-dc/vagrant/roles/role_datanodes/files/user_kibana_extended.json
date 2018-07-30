@@ -1,0 +1,10 @@
+{
+  "username": "kibana_extended",
+  "password": "kibana",
+  "roles": [
+    "kibana_system_extended"
+  ],
+  "full_name": null,
+  "email": null,
+  "enabled": true
+}

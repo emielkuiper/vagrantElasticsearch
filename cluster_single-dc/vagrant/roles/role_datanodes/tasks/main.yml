@@ -2,7 +2,7 @@
 ### Description of task
 ###
 
-# In this main.yml file the following actions will be performed on the master nodes
+# In this main.yml file the following actions will be performed on the CLIENT nodes
 #
 # - templating elasticsearch.yml config file
 # - templating jvm.options config file
@@ -38,7 +38,7 @@
 ### Start Elasticsearch at boot time
 ###
 
-  - name: Start and enable Elasticsearch on master nodes at boot time
+  - name: Start and enable Elasticsearch on DATA nodes at boot time
     service:
        name: "{{ item }}"
        state: started
@@ -46,13 +46,13 @@
     with_items:
        - elasticsearch
     when:
-      - inventory_hostname in groups['es_masternodes']
+      - inventory_hostname in groups['es_datanodes']
     tags:
       - elasticsearch-configfiles
       - elasticsearch-firststart
 
 
-  - name: Wait for Elasticsearch port 9200 to become available on master nodes
+  - name: Wait for Elasticsearch port 9200 to become available on DATA nodes
     wait_for:
       host: "{{ es_service_ip_address }}"
       port: 9200
@@ -61,7 +61,8 @@
       connect_timeout: 5
       timeout: "{{ wait_for_timeout }}"
     when:
-      - inventory_hostname in groups['es_masternodes']
+      - inventory_hostname in groups['es_datanodes']
     tags:
-      - elasticsearch-configfiles
-      - elasticsearch-firststart
+      - xpack-license
+      - xpack-test
+      - xpack-pw
