@@ -87,7 +87,7 @@
     wait_for_timeout: 180
 
     ### Temporary bootstrap password
-    password_bootstrap:		"1234"
+    password_bootstrap:  "1234"
 
     ### Native accounts
     password_kibana:                "kibana"
