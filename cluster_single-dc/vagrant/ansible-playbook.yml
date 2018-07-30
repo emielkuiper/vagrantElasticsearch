@@ -1,3 +1,7 @@
+###
+### Set up TLS on ALL nodes that are part of the cluster
+###
+
 - hosts:         es_masternodes, es_datanodes, es_clientnodes
   remote_user:   vagrant
   become:        true
@@ -23,6 +27,9 @@
     - role: role_tls
 
 
+###
+### Set up initial cluster with the masternodes
+### Also: set up X-Pack, Elastic internal system users and one additional 'administrator' account
 
 - hosts:         es_masternodes
   remote_user:   vagrant
@@ -38,12 +45,14 @@
     path_data:                "/var/lib/elasticsearch"
     path_logs:                "/var/log/elasticsearch"
 
+    # Setting default licensetype to trial, meaning that initial cluster license will be TRIAL instead of BASIC
+    xpack_license_self_generated_type: trial
+
     # bootstrap_memory_lock setting to false for use in development system
     bootstrap_memory_lock:    "false"
     es_network_hosts:         "{{ groups['es_masternodes'] | to_json }}"
     es_service_interface: "eth1"
     es_service_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + es_service_interface].ipv4.address }}"
-    # es_service_ip_address:    "0.0.0.0"
 
     # To create a dedicated master-eligible node when X-Pack is installed, set:
     node_master:       true
@@ -61,7 +70,6 @@
     group: "elasticsearch"
 
     # TLS parameters
-    #
     # zip archive name with P12 file
     elastic_ca_archive_name: "elasticstack"
     elastic_ca_password: "1234"
@@ -74,6 +82,9 @@
     # jvm.options
     jvm_initial_heap_size:   "512m"
     jvm_maximum_heap_size:   "512m"
+
+    ### Wait timeout for Elastic port 9200 to become available
+    wait_for_timeout: 180
 
     ### Temporary bootstrap password
     password_bootstrap:		"1234"
@@ -91,6 +102,12 @@
     # Masternode only runs Elasticsearch as master-eligable node
     - role: role_masternodes
 
+
+###
+### Set up Logstashnodes
+###
+
+
 - hosts:          es_logstashnodes
   remote_user:    vagrant
   become:         true
@@ -105,6 +122,12 @@
   roles:
     - role: role_logstash
 
+
+
+###
+### Set up Kibananodes
+###
+
 - hosts:          es_kibananodes
   remote_user:    vagrant
   become:         true
@@ -115,8 +138,8 @@
 #Assumes 1 kibana host and 1 elastic client, need to add some logic to deal with >1
   vars:
     kibana_server_port:                   "5601"
-    kibana_server_host:                   "{{ groups['es_kibananodes'][0]}}"
-    kibana_elasticsearch_url:             "{{ groups['es_clientnodes'][0]}}"
+    kibana_server_host:                   "{{ groups['es_kibananodes'] | to_json }}"
+    kibana_elasticsearch_url:             "{{ groups['es_clientnodes'] | to_json }}"
 #Temporary, will use vault in future
     password_kibana:                      "kibana"
 
