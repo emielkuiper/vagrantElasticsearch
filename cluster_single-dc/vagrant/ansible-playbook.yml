@@ -76,7 +76,7 @@
     jvm_maximum_heap_size:   "512m"
 
     ### Temporary bootstrap password
-    password_bootstrap:		"1234"
+    password_bootstrap:  "1234"
 
     ### Native accounts
     password_kibana:                "kibana"
