@@ -2,7 +2,7 @@
 ##### Elasticsearch TLS setup
 #####
 
-  - name: Installing unzip as dependancy for unarchive operations
+  - name: Installing unzip as dependency for unarchive operations
     yum:
        name: "{{ item }}"
        state: latest
