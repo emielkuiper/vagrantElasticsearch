@@ -13,6 +13,7 @@
       - filebeat
     when:
       - inventory_hostname in groups['es_beats']
+    ignore_errors: true
     tags:
       - filebeat-modules
       - filebeat
@@ -28,6 +29,7 @@
       - system
     when:
       - inventory_hostname in groups['es_beats']
+    ignore_errors: true
     tags:
       - filebeat-modules
       - filebeat
@@ -40,6 +42,7 @@
     when:
       - inventory_hostname in groups['es_beats']
       - inventory_hostname in groups['es_logstashnodes']
+    ignore_errors: true
     tags:
       - filebeat-modules
       - filebeat
