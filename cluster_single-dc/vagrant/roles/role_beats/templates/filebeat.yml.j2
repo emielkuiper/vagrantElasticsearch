@@ -139,9 +139,7 @@ setup.kibana:
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   # The Logstash hosts
-  #hosts: ["localhost:5044"]
-  #hosts: ["{{ groups.es_logstashnodes[] | join(":%d, " | format(logstash_listen_port_filebeat)) }}:{{ logstash_listen_port_filebeat }}"]
-  hosts: "[" + "\"" + {{ groups.es_logstashnodes[0] }}:{{ logstash_listen_port_filebeat }} + "," + {{ groups.es_logstashnodes[1] }}:{{ logstash_listen_port_filebeat }} + "\"" + "]"
+  hosts: [{% for node in groups['es_logstashnodes'] %}"{{ node }}:{{logstash_listen_port_filebeat}}"{% if not loop.last %},{% endif %}{% endfor%}]
   #logstash_listen_port_filebeat: 5401
   #logstash_listen_port_metricbeat: 5402
   #logstash_listen_port_packetbeat: 5403
