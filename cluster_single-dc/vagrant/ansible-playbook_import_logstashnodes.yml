@@ -10,6 +10,9 @@
   become_method:  sudo
   gather_facts:   true
 
+  vars_files:
+  - group_vars/all
+  
   vars:
     es_data_ports:         "9200"
     es_data_hosts:         "{{ groups['es_datanodes'] | to_json }}"

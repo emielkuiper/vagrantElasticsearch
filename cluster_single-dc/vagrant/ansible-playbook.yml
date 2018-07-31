@@ -1,6 +1,3 @@
-vars_files:
-  - group_vars/all
-
 # 1) First deploy CA certificates on all nodes in cluster (es_masternodes, es_datanodes, es_clientnodes)
 #    TLS needs to be deployed FIRST
 - import_playbook: ansible-playbook_import_tls.yml
