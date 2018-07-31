@@ -9,7 +9,7 @@ output {
     hosts => {{ es_data_hosts }}
     index => "{{logstash_datacenter}}-filebeat-%{+YYYY.MM.dd}"
     document_type => "%{[@metadata][type]}"
-    user => "logstash_system"
-    password => "logstash"
+    user => "{{es_logstash_username}}"
+    password => "{{password_logstash_system}}"
   }
 }

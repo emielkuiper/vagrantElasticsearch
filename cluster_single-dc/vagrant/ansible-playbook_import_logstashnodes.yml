@@ -13,6 +13,8 @@
   vars:
     es_data_ports:         "9200"
     es_data_hosts:         "{{ groups['es_datanodes'] | to_json }}"
+    es_logstash_username:           "logstash_system"
+    password_logstash_system:       "logstash"
 
   roles:
     - role: role_logstash
