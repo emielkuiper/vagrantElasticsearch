@@ -189,7 +189,7 @@ Vagrant.configure("2") do |config|
     dc1_es_kibana_01.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_kibana_01.vm.network :"private_network", ip: "172.28.129.108", auto_config: true
 #    dc1_es_kibana_01.hostsupdater.aliases = ["dc1_es-kibana_01"]
-    dc1_es_kibana_01.vm.network "forwarded_port", guest: 5601, host: 5601, protocol: "tcp"
+    dc1_es_kibana_01.vm.network "forwarded_port", guest: 5601, host: 5601, protocol: "tcp", guest_ip: "172.28.129.108"
     dc1_es_kibana_01.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
