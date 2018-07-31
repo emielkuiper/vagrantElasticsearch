@@ -108,6 +108,8 @@
     password_beats_system:          "ebeats"
     password_elastic:               "elastic"
 
+    # monitoring
+    xpack_monitoring_collection_enabled: "true"
 
   roles:
     # Masternode only runs Elasticsearch as master-eligable node
@@ -176,6 +178,9 @@
     ### Useraccounts in filerealm!
     username_es_administrator: "es_administrator"
     password_es_administrator: "es_administrator"
+
+    # monitoring
+    xpack_monitoring_collection_enabled: "true"
 
   roles:
     - role: role_datanodes
@@ -249,6 +254,9 @@
     password_logstash_system:       "logstash"
     password_beats_system:          "ebeats"
     password_elastic:               "elastic"
+
+    # monitoring
+    xpack_monitoring_collection_enabled: "true"
 
 
   roles:

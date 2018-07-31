@@ -112,15 +112,15 @@
       - xpack-test
       - xpack-pw
 
-  - name: Debug message on user auth results
-    debug:
-      msg: "NATIVE realm authentication for user elastic with password FAILED."
-    when:
-    - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+#  - name: Debug message on user auth results
+#    debug:
+#      msg: "NATIVE realm authentication for user elastic with password FAILED."
+#    when:
+#    - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
 #    - cn_xpack_es_administrator_auth.json.error.reason == 'failed to authenticate user [********]'
-    tags:
-      - xpack-pw
-      - xpack-test
+#    tags:
+#      - xpack-pw
+#      - xpack-test
 
 ################################################################################
 
@@ -226,9 +226,10 @@
     ignore_errors: yes
     when:
       - inventory_hostname == groups['es_clientnodes'][0]
-      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+#      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
 #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-
+    tags:
+      - kibana_user
 
   - name: Creating additional user kibana_extended using FILE realm ADMINISTRATOR
     uri:
@@ -245,5 +246,7 @@
     ignore_errors: yes
     when:
       - inventory_hostname == groups['es_clientnodes'][0]
-      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+#      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
 #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+    tags:
+      - kibana_user
