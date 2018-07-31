@@ -1,0 +1,31 @@
+###
+### Set up Beats
+###
+
+- hosts:          es_beats
+  remote_user:    vagrant
+  become:         true
+  become_user:    root
+  become_method:  sudo
+  gather_facts:   true
+
+  vars:
+
+    es_logstash_hosts:         "{{ groups['es_logstashnodes'] | to_json }}"
+
+    logstash_listen_port_filebeat: 5401
+    logstash_listen_port_metricbeat: 5402
+    logstash_listen_port_packetbeat: 5403
+    logstash_listen_port_heartbeat: 5404
+
+
+    # Ownership and permissions for configfiles
+    owner: "root"
+    group: "elasticsearch"
+
+    #Temporary, will use vault in future
+    #username_logstash_system:  "logstash_system"
+    #password_logstash_system:  "logstash"
+
+  roles:
+    - role: role_beats

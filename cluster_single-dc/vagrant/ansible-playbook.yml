@@ -22,3 +22,7 @@
 
 # 6) And the kibana nodes
 - import_playbook: ansible-playbook_import_logstashnodes.yml
+
+
+# 7) Deployment of beats
+- import_playbook: ansible-playbook_import_beats.yml
