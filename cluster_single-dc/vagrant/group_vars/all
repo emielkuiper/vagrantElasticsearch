@@ -1,0 +1,5 @@
+### Native accounts
+password_kibana:                "kibana"
+password_logstash_system:       "logstash"
+password_beats_system:          "ebeats"
+password_elastic:               "elastic"
