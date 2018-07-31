@@ -144,12 +144,14 @@
     es_service_interface: "eth1"
     es_service_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + es_service_interface].ipv4.address }}"
 
-    # To create a dedicated master-eligible node when X-Pack is installed, set:
+    # To create a dedicated data node when X-Pack is installed, set:
     node_master:       false
     node_data:         true
-    node_ingest:       false
+    # note: assigning role of ingest node to data nodes
+    node_ingest:       true
     node_ml:           false
     xpack_security_enabled: yes
+
 
     # Master node majority
     discovery_zen_minimum_master_nodes: 2
