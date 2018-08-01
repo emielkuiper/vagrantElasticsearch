@@ -1,32 +1,47 @@
 # 1) First deploy CA certificates on all nodes in cluster (es_masternodes, es_datanodes, es_clientnodes)
 #    TLS needs to be deployed FIRST
 - import_playbook: ansible-playbook_import_tls.yml
-
+  tags:
+    - tls
+    - filerealm
 
 # 2) Then deploy the initial cluster with the master nodes
 #    Directly after TLS, the master nodes need to be deployed
 - import_playbook: ansible-playbook_import_masternodes.yml
-
+  tags:
+    - masternodes
 
 # 3) Deploy all of the data nodes
 - import_playbook: ansible-playbook_import_datanodes.yml
+  tags:
+    - datanodes
 
 
 # 4) Deploy all of the client nodes
 - import_playbook: ansible-playbook_import_clientnodes.yml
+  tags:
+    - clientnodes
 
 
 # 5) Same for the logstash nodes
 - import_playbook: ansible-playbook_import_logstashnodes.yml
+  tags:
+    - logstashnodes
 
 
 # 6) And the kibana nodes
 - import_playbook: ansible-playbook_import_kibananodes.yml
+  tags:
+    - kibananodes
 
 
 # 7) Deployment of machine learning nodes
 - import_playbook: ansible-playbook_import_machinelearningnodes.yml
+  tags:
+    - machinelearningnodes
 
 
 # 8) Deployment of beats
 - import_playbook: ansible-playbook_import_beats.yml
+  tags:
+    - beats

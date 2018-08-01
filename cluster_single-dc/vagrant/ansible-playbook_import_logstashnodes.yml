@@ -16,8 +16,16 @@
   vars:
     es_data_ports:         "9200"
     es_data_hosts:         "{{ groups['es_datanodes'] | to_json }}"
-    es_logstash_username:           "logstash_system"
-    password_logstash_system:       "{{password_logstash_system}}"
+
+    # Should be like this:
+    # es_logstash_username:           "logstash_system"
+    # password_logstash_system:       "{{password_logstash_system}}"
+
+    # but temporarily using elastic user credentials, due to permission errors for out-of-the-box logstash_system role
+    es_logstash_username:           "elastic"
+    password_logstash_system:       "elastic"
+
+    logstash_datacenter: "dc1"
 
     pipeline_filebeat_workers: "1"
     pipeline_metricbeat_workers: "1"

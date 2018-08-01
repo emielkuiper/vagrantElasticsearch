@@ -96,8 +96,8 @@
       dest: "/etc/elasticsearch/ca"
       owner: "{{ owner }}"
       group: "{{ group }}"
-    when:
-      - ca_file_p12.stat.exists == false
+#    when:
+#      - ca_file_p12.stat.exists == false
     tags:
       - elasticsearch-ca
 
