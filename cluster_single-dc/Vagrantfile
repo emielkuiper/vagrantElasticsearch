@@ -23,22 +23,6 @@ Vagrant.configure("2") do |config|
 #  end
 
 
-  ### 
-  ### Variables
-  ###
-
-#  IP_MASTER_01=172.28.129.100
-#  IP_MASTER_02=172.28.129.101
-#  IP_MASTER_03=172.28.129.102
-#  IP_DATA_01=172.28.129.103
-#  IP_DATA_02=172.28.129.104
-#  IP_DATA_03=172.28.129.105
-#  IP_DATA_04=172.28.129.106
-#  IP_LOGSTASH_01=172.28.129.107
-#  IP_KIBANA_01=172.28.129.108
-#  IP_CLIENT_01=172.28.129.109
-
-
   ###
   ### Define 3x master node
   ###
@@ -48,8 +32,8 @@ Vagrant.configure("2") do |config|
     dc1_es_master_01.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_master_01.vm.network :"private_network", ip: "172.28.129.100", auto_config: true
     dc1_es_master_01.vm.network "forwarded_port", guest: 9200, host: 19200, protocol: "tcp"
-    dc1_es_master_01.vm.network "forwarded_port", guest: 5601, host: 15601, protocol: "tcp"
-#    dc1_es_master_01.hostsupdater.aliases = ["dc1_es_master_01"]
+    # left as an example
+    # dc1_es_master_01.hostsupdater.aliases = ["dc1_es_master_01"]
     dc1_es_master_01.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -64,7 +48,6 @@ Vagrant.configure("2") do |config|
     dc1_es_master_02.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_master_02.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_master_02.vm.network :"private_network", ip: "172.28.129.101", auto_config: true
-#    dc1_es_master_02.hostsupdater.aliases = ["dc1_es_master_02"]
     dc1_es_master_02.vm.network "forwarded_port", guest: 9200, host: 29200, protocol: "tcp"
     dc1_es_master_02.vm.network "forwarded_port", guest: 5601, host: 25601, protocol: "tcp"
     dc1_es_master_02.vm.provider :virtualbox do |v|
@@ -81,7 +64,6 @@ Vagrant.configure("2") do |config|
     dc1_es_master_03.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_master_03.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_master_03.vm.network :"private_network", ip: "172.28.129.102", auto_config: true
-#    dc1_es_master_03.hostsupdater.aliases = ["dc1_es_master_03"]
     dc1_es_master_03.vm.network "forwarded_port", guest: 9200, host: 39200, protocol: "tcp"
     dc1_es_master_03.vm.network "forwarded_port", guest: 5601, host: 35601, protocol: "tcp"
     dc1_es_master_03.vm.provider :virtualbox do |v|
@@ -103,7 +85,6 @@ Vagrant.configure("2") do |config|
     dc1_es_data_01.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_data_01.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_data_01.vm.network :"private_network", ip: "172.28.129.103", auto_config: true
-#    dc1_es_data_01.hostsupdater.aliases = ["dc1_es_data_01"]
     dc1_es_data_01.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -118,7 +99,6 @@ Vagrant.configure("2") do |config|
     dc1_es_data_02.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_data_02.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_data_02.vm.network :"private_network", ip: "172.28.129.104", auto_config: true
-#    dc1_es_data_02.hostsupdater.aliases = ["dc1_es_data_02"]
     dc1_es_data_02.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -133,7 +113,6 @@ Vagrant.configure("2") do |config|
     dc1_es_data_03.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_data_03.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_data_03.vm.network :"private_network", ip: "172.28.129.105", auto_config: true
-#    dc1_es_data_03.hostsupdater.aliases = ["dc1_es_data_03"]
     dc1_es_data_03.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -148,7 +127,6 @@ Vagrant.configure("2") do |config|
     dc1_es_data_04.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_data_04.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_data_04.vm.network :"private_network", ip: "172.28.129.106", auto_config: true
-#    dc1_es_data_04.hostsupdater.aliases = ["dc1_es_data_04"]
     dc1_es_data_04.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -168,7 +146,6 @@ Vagrant.configure("2") do |config|
     dc1_es_logstash_01.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_logstash_01.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_logstash_01.vm.network :"private_network", ip: "172.28.129.107", auto_config: true
-#    dc1_es_logstash_01.hostsupdater.aliases = ["dc1_es_logstash_01"]
     dc1_es_logstash_01.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -183,7 +160,6 @@ Vagrant.configure("2") do |config|
     dc1_es_logstash_02.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_logstash_02.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_logstash_02.vm.network :"private_network", ip: "172.28.129.110", auto_config: true
-#    dc1_es_logstash_02.hostsupdater.aliases = ["dc1_es_logstash_02"]
     dc1_es_logstash_02.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -204,7 +180,6 @@ Vagrant.configure("2") do |config|
     dc1_es_kibana_01.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_kibana_01.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_kibana_01.vm.network :"private_network", ip: "172.28.129.108", auto_config: true
-#    dc1_es_kibana_01.hostsupdater.aliases = ["dc1_es-kibana_01"]
     dc1_es_kibana_01.vm.network "forwarded_port", guest: 5601, host: 5601, protocol: "tcp", guest_ip: "172.28.129.108"
     dc1_es_kibana_01.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
@@ -225,7 +200,6 @@ Vagrant.configure("2") do |config|
     dc1_es_client_01.vm.synced_folder "./vagrant", "/vagrant"
     dc1_es_client_01.vm.box = "oraclelinuxworld/base_elasticsearch"
     dc1_es_client_01.vm.network :"private_network", ip: "172.28.129.109", auto_config: true
-#    dc1_es_client_01.hostsupdater.aliases = ["dc1_es_client_01"]
     dc1_es_client_01.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -237,26 +211,37 @@ Vagrant.configure("2") do |config|
   end   # End of config.vm.define "dc1_es_client_01"
 
 
-  # Set auto_update to false
-  # This will not automatically update the guest additions on VM boot
-  # Set to "true" if you want auto-updates
-  # config.vbguest.auto_update = false
+  ###
+  ### Define 2x Machine Learning node
+  ###
 
-  # Run the provisioning playbook on all hosts
-  # :vars section provided as example on passing variables to
-  # ansible in possible future versions
-  #
-  #config.vm.provision "ansible" do |provision|
-  #      provision.verbose = "v"
-  #      provision.playbook = "vagrant/ansible-playbook.yml"
-  #      # ansible.limit = "all"
-  #      provision.groups = {
-  #        "es_masternodes" => ["172.28.129.100", "172.28.129.101", "172.28.129.102"],
-  #        "es_datanodes" => ["172.28.129.103", "172.28.129.104", "172.28.129.105", "172.28.129.106"],
-  #        "es_logstashnodes" => ["172.28.129.107"],
-  #        "es_kibananodes" => ["172.28.129.108"],
-  #        "es_clientnodes" => ["172.28.129.109"]
-  #      }
-  #end   # End of "config.vm.provision"
+  config.vm.define "dc1_es_machinelearning_01" do |dc1_es_machinelearning_01|
+    dc1_es_machinelearning_01.vm.synced_folder "./vagrant", "/vagrant"
+    dc1_es_machinelearning_01.vm.box = "oraclelinuxworld/base_elasticsearch"
+    dc1_es_machinelearning_01.vm.network :"private_network", ip: "172.28.129.111", auto_config: true
+    dc1_es_machinelearning_01.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--cpus", "2"]
+      v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+      v.customize ["modifyvm", :id, "--usb", "off"]
+      v.customize ["modifyvm", :id, "--audio", "none"]
+      v.customize ["modifyvm", :id, "--name", "dc1_es_machinelearning_01"]
+    end # End of "dc1_es_machinelearning_01.vm.provider"
+  end   # End of config.vm.define "dc1_es_machinelearning_01"
+
+  config.vm.define "dc1_es_machinelearning_02" do |dc1_es_machinelearning_02|
+    dc1_es_machinelearning_02.vm.synced_folder "./vagrant", "/vagrant"
+    dc1_es_machinelearning_02.vm.box = "oraclelinuxworld/base_elasticsearch"
+    dc1_es_machinelearning_02.vm.network :"private_network", ip: "172.28.129.112", auto_config: true
+    dc1_es_machinelearning_02.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--cpus", "2"]
+      v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+      v.customize ["modifyvm", :id, "--usb", "off"]
+      v.customize ["modifyvm", :id, "--audio", "none"]
+      v.customize ["modifyvm", :id, "--name", "dc1_es_machinelearning_02"]
+    end # End of "dc1_es_machinelearning_02.vm.provider"
+  end   # End of config.vm.define "dc1_es_machinelearning_02"
+
 
 end       # End of "Vagrant.configure"
