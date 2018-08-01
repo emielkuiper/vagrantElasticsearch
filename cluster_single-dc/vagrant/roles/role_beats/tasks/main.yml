@@ -11,12 +11,14 @@
     command: "systemctl reset-failed {{ item }}.service"
     with_items:
       - filebeat
+      - metricbeat
     when:
       - inventory_hostname in groups['es_beats']
     ignore_errors: true
     tags:
       - filebeat-modules
       - filebeat
+      - metricbeat
 
 
 # Enable filebeat modules
@@ -47,7 +49,6 @@
       - filebeat-modules
       - filebeat
 
-
 ###
 ### Filebeat config file
 ###
@@ -67,6 +68,24 @@
       - filebeat-configfiles
       - filebeat
 
+###
+### Metricbeat config file
+###
+
+  - name: Templating Filebeat config file
+    template:
+      src: templates/metricbeat.yml.j2
+      dest: "/etc/filebeat/metricbeat.yml"
+      mode: 0750
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    notify:
+      - restart metricbeat
+    when:
+      - inventory_hostname in groups['es_beats']
+    tags:
+      - metricbeat-configfiles
+      - metricbeat
 
 ###
 ### Start Filebeat at boot time
@@ -79,6 +98,7 @@
       enabled: True
     with_items:
       - filebeat
+      - metricbeat
     when:
       - inventory_hostname in groups['es_beats']
     tags:
