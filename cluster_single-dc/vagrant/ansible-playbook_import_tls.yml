@@ -5,7 +5,7 @@
 ###                (create users and users_roles files only, )
 ###
 
-- hosts:         es_masternodes, es_datanodes, es_clientnodes
+- hosts:         es_masternodes, es_datanodes, es_clientnodes, es_machinelearningnodes
   remote_user:   vagrant
   become:        true
   become_user:   root
