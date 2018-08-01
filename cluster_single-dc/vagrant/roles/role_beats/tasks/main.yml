@@ -75,7 +75,7 @@
   - name: Templating Filebeat config file
     template:
       src: templates/metricbeat.yml.j2
-      dest: "/etc/filebeat/metricbeat.yml"
+      dest: "/etc/metricbeat/metricbeat.yml"
       mode: 0750
       owner: "{{ owner }}"
       group: "{{ group }}"
