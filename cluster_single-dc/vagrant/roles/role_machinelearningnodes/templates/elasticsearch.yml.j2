@@ -1,0 +1,154 @@
+# ======================== Elasticsearch Configuration =========================
+#
+# NOTE: Elasticsearch comes with reasonable defaults for most settings.
+#       Before you set out to tweak and tune the configuration, make sure you
+#       understand what are you trying to accomplish and the consequences.
+#
+# The primary way of configuring a node is via this file. This template lists
+# the most important settings you may want to configure for a production cluster.
+#
+# Please consult the documentation for further information on configuration options:
+# https://www.elastic.co/guide/en/elasticsearch/reference/index.html
+#
+# ---------------------------------- Cluster -----------------------------------
+#
+# Use a descriptive name for your cluster:
+#
+cluster.name:             {{ clustername }}
+#
+# ------------------------------------ Node ------------------------------------
+#
+# Use a descriptive name for the node:
+#
+#node.name: node-1
+#
+# Add custom attributes to the node:
+#
+#node.attr.rack: r1
+#
+
+node.master:              {{ node_master }}
+node.data:                {{ node_data }}
+node.ingest:              {{ node_ingest }}
+search.remote.connect:    {{ search_remote_connect }}
+node.ml:                  {{ node_ml }}
+xpack.ml.enabled:         {{ xpack_ml_enabled }}
+xpack.security.enabled:   {{ xpack_security_enabled }}
+
+xpack.license.self_generated.type: {{ xpack_license_self_generated_type }}
+
+# ----------------------------------- Paths ------------------------------------
+#
+# Path to directory where to store the data (separate multiple locations by comma):
+#
+path.data:                {{ path_data }}
+#
+# Path to log files:
+#
+path.logs:                {{ path_logs }}
+#
+# ----------------------------------- Memory -----------------------------------
+#
+# Lock the memory on startup:
+#
+bootstrap.memory_lock:    {{ bootstrap_memory_lock }}
+#
+# Make sure that the heap size is set to about half the memory available
+# on the system and that the owner of the process is allowed to use this
+# limit.
+#
+# Elasticsearch performs poorly when the system is swapping the memory.
+#
+# ---------------------------------- Network -----------------------------------
+#
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+network.host: {{ es_service_ip_address }}
+#
+# Set a custom port for HTTP:
+#http.port: 9200
+
+# A bind port range. Defaults to 9300-9400.
+# transport.tcp.port:
+
+# The port that other nodes in the cluster should use when communicating with this node.
+# Useful when a cluster node is behind a proxy or firewall and the transport.tcp.port is not directly addressable from the outside.
+# Defaults to the actual port assigned via transport.tcp.port.
+# transport.publish_port:
+
+# Used to set the transport.bind_host and the transport.publish_host
+# Defaults to transport.host or network.host.
+# transport.host: {{ es_service_ip_address }}
+
+# The host address to bind the transport service to. Defaults to transport.host (if set) or network.bind_host.
+# transport.bind_host:
+
+# The host address to publish for nodes in the cluster to connect to.
+# Defaults to transport.host (if set) or network.publish_host.
+# transport.publish_host:
+
+# The socket connect timeout setting (in time setting format). Defaults to 30s.
+# transport.tcp.connect_timeout:
+
+# Set to true to enable compression (DEFLATE) between all nodes. Defaults to false.
+# transport.tcp.compress
+
+# Schedule a regular application-level ping message to ensure that transport connections between nodes are kept alive.
+# Defaults to 5s in the transport client and -1 (disabled) elsewhere.
+# It is preferable to correctly configure TCP keep-alives instead of using this feature, because TCP keep-alives apply to all
+# kinds of long-lived connection and not just to transport connections.
+# transport.ping_schedule:
+
+# For more information, consult the network module documentation.
+#
+
+xpack.security.transport.ssl.enabled: {{ xpack_security_transport_ssl_enabled }}
+xpack.security.transport.ssl.verification_mode: {{ xpack_security_transport_ssl_verification_mode }}
+xpack.security.transport.ssl.keystore.path: {{ xpack_security_transport_ssl_keystore_path }}
+xpack.security.transport.ssl.truststore.path: {{ xpack_security_transport_ssl_truststore_path }}
+
+# --------------------------------- Discovery ----------------------------------
+#
+# Pass an initial list of hosts to perform discovery when new node is started:
+# The default list of hosts is ["127.0.0.1", "[::1]"]
+#
+discovery.zen.ping.unicast.hosts: {{ es_network_hosts }}
+#
+# Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
+#
+discovery.zen.minimum_master_nodes: {{ discovery_zen_minimum_master_nodes }}
+#
+# For more information, consult the zen discovery module documentation.
+#
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+#gateway.recover_after_nodes: 3
+#
+# For more information, consult the gateway module documentation.
+#
+# ---------------------------------- Various -----------------------------------
+#
+# Require explicit names when deleting indices:
+#
+#action.destructive_requires_name: true
+#
+
+# monitoring
+xpack.monitoring.collection.enabled: {{ xpack_monitoring_collection_enabled }}
+
+# ---------------------------------- REALMS ------------------------------------
+#
+xpack:
+  security:
+    authc:
+      realms:
+        cluster_administrator:
+          type: file
+          order: 0
+          enabled: true
+        native:
+          type: native
+          order: 1
+          enabled: true

@@ -1,0 +1,63 @@
+###
+### Description of task
+###
+
+# In this main.yml file the following actions will be performed on the machine learning nodes
+#
+# - templating elasticsearch.yml config file
+# - templating jvm.options config file
+# - starting elasticsearch processes
+# - wait for port 9200 to become available (= wait_for completion of elasticsearch startup)
+
+
+###
+### Elasticsearch config file
+###
+
+  - name: Templating Elasticsearch config file
+    template:
+      src: templates/elasticsearch.yml.j2
+      dest: "/etc/elasticsearch/elasticsearch.yml"
+    tags:
+      - xpack-ml
+
+###
+### Elasticsearch jvm.options file
+###
+
+  - name: Templating JVM config file
+    template:
+      src: templates/jvm.options.j2
+      dest: "/etc/elasticsearch/jvm.options"
+    tags:
+      - xpack-ml
+
+###
+### Start Elasticsearch at boot time
+###
+
+  - name: Start and enable Elasticsearch on machine learning nodes at boot time
+    service:
+       name: "{{ item }}"
+       state: started
+       enabled: True
+    with_items:
+       - elasticsearch
+    when:
+      - inventory_hostname in groups['es_machinelearningnodes']
+    tags:
+      - xpack-ml
+
+
+  - name: Wait for Elasticsearch port 9200 to become available on machine learning nodes
+    wait_for:
+      host: "{{ es_service_ip_address }}"
+      port: 9200
+      state: started
+      delay: 5
+      connect_timeout: 5
+      timeout: "{{ wait_for_timeout }}"
+    when:
+      - inventory_hostname in groups['es_machinelearningnodes']
+    tags:
+      - xpack-ml

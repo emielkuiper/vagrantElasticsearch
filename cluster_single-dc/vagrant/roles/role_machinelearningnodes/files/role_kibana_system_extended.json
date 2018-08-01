@@ -1,0 +1,42 @@
+{
+  "cluster": [
+    "monitor",
+    "manage_index_templates",
+    "cluster:admin/xpack/monitoring/bulk",
+    "manage_saml"
+  ],
+  "indices": [
+    {
+      "names": [
+        ".kibana*",
+        ".reporting-*"
+      ],
+      "privileges": [
+        "all"
+      ]
+    },
+    {
+      "names": [
+        ".monitoring-*"
+      ],
+      "privileges": [
+        "all"
+      ]
+    },
+    {
+      "names": [
+        "*"
+      ],
+      "privileges": [
+	      "view_index_metadata",
+        "read"
+      ]
+    }
+  ],
+  "run_as": [],
+  "metadata": {
+  },
+  "transient_metadata": {
+    "enabled": true
+  }
+}
