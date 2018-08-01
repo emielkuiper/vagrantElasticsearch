@@ -19,5 +19,16 @@
     es_logstash_username:           "logstash_system"
     password_logstash_system:       "{{password_logstash_system}}"
 
+    pipeline_filebeat_workers: "1"
+    pipeline_metricbeat_workers: "1"
+    pipeline_packetbeat_workers: "1"
+    pipeline_heartbeat_workers: "1"
+
+    pipeline_filebeat_queue: "persisted"
+    pipeline_metricbeat_queue: "persisted"
+    pipeline_packetbeat_queue: "persisted"
+    pipeline_heartbeat_queue: "persisted"
+
+
   roles:
     - role: role_logstash

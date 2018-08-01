@@ -10,16 +10,32 @@
     with_items:
        - logstash
     when:
-       - ansible_os_family == "RedHat"
-       - ansible_distribution_major_version == "7"
+      - inventory_hostname in groups['es_logstashnodes']
+    tags:
+      - logstash
 
   - name: Template Logstash configuration files
     template:
       src: "{{ item }}.j2"
       dest: "/etc/logstash/conf.d/{{ item }}"
     with_items:
-      - 01-filebeats.conf
+      - 01-filebeat.conf
       - 02-metricbeat.conf
       - 03-packetbeat.conf
       - 04-heartbeat.conf
+    when:
+      - inventory_hostname in groups['es_logstashnodes']
+    tags:
+      - logstash
+
+  - name: Template Logstash pipeline config files
+    template:
+      src: "{{ item }}.j2"
+      dest: "/etc/logstash/{{ item }}"
+    with_items:
+      - pipelines.yml
     notify: restart logstash
+    when:
+      - inventory_hostname in groups['es_logstashnodes']
+    tags:
+      - logstash

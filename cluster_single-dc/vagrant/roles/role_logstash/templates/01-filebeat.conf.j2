@@ -1,0 +1,15 @@
+input {
+  beats {
+    port => {{ logstash_listen_port_filebeat }}
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => {{ es_data_hosts }}
+    index => "{{logstash_datacenter}}-filebeat-%{+YYYY.MM.dd}"
+    document_type => "%{[@metadata][type]}"
+    user => "{{es_logstash_username}}"
+    password => "{{password_logstash_system}}"
+  }
+}
