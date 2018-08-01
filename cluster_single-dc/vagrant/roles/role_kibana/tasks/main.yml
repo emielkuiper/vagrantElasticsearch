@@ -1,4 +1,17 @@
 ###
+### Kibana config file
+###
+
+  - name: Templating Kibana config file
+    template:
+      src: templates/kibana.yml.j2
+      dest: "/etc/kibana/kibana.yml"
+    notify:
+      - restart kibana
+    tags:
+      - kibana-configfiles
+
+###
 ### Start Kibana at boot time
 ###
 
@@ -10,18 +23,6 @@
     with_items:
        - kibana
     when:
-       - ansible_os_family == "RedHat"
-       - ansible_distribution_major_version == "7"
-
-###
-### Kibana config file
-###
-
-  - name: Templating Kibana config file
-    template:
-      src: templates/kibana.yml.j2
-      dest: "/etc/kibana/kibana.yml"
-    notify:
-      - restart kibana
+      - inventory_hostname in groups['es_kibananodes']
     tags:
       - kibana-configfiles
