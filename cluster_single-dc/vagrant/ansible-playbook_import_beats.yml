@@ -28,4 +28,5 @@
     #password_logstash_system:  "logstash"
 
   roles:
-    - role: role_beats
+    - role: role_metricbeats
+    - role: role_filebeats
