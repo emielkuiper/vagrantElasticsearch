@@ -7,15 +7,34 @@
 
 # It can happen that services are restarted too often, requiring a reset
  #RESET service metricbeat
-  - name: RESET failed beat services
-    command: "systemctl reset-failed {{ item }}.service"
-    with_items:
-      - metricbeat
+#  - name: RESET failed beat services
+#    command: "systemctl reset-failed {{ item }}.service"
+#    with_items:
+#      - metricbeat
+#    when:
+#      - inventory_hostname in groups['es_beats']
+#    ignore_errors: true
+#    tags:
+#      - metricbeat-modules
+#      - metricbeat
+
+###
+### Metricbeat config file
+###
+
+  - name: Templating Metric config file
+    template:
+      src: templates/metricbeat.yml.j2
+      dest: "/etc/metricbeat/metricbeat.yml"
+      mode: 0750
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    notify:
+      - restart metricbeat
     when:
       - inventory_hostname in groups['es_beats']
-    ignore_errors: true
     tags:
-      - metricbeat-modules
+      - metricbeat-configfiles
       - metricbeat
 
 
@@ -57,7 +76,7 @@
       - metricbeat
 
 ## Enable kibana elasticsearch modules
-  - name: Enable elasticsearch metricbeat module on logstash nodes
+  - name: Enable elasticsearch metricbeat module on kibana nodes
     command: /usr/bin/metricbeat modules enable {{ item }}
     with_items:
       - kibana
@@ -68,24 +87,6 @@
       - metricbeat-modules
       - metricbeat
 
-###
-### Metricbeat config file
-###
-
-  - name: Templating Metric config file
-    template:
-      src: templates/metricbeat.yml.j2
-      dest: "/etc/metricbeat/metricbeat.yml"
-      mode: 0750
-      owner: "{{ owner }}"
-      group: "{{ group }}"
-    notify:
-      - restart metricbeat
-    when:
-      - inventory_hostname in groups['es_beats']
-    tags:
-      - metricbeat-configfiles
-      - metricbeat
 
 ###
 ### Start beats at boot time
