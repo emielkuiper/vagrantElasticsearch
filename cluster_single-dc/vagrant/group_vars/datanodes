@@ -1,0 +1,10 @@
+# To create a dedicated data node when X-Pack is installed, set:
+node_master:       false
+node_data:         true
+# note: assigning role of ingest node to data nodes
+node_ingest:       true
+node_ml:           false
+xpack_security_enabled: yes
+
+# monitoring
+xpack_monitoring_collection_enabled: "true"

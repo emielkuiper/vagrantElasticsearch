@@ -1,5 +1,48 @@
-### Native accounts
+###
+### Generic variables
+### Applicable to ALL roles
+###
+
+# Ownership and permissions for configfiles
+owner: "root"
+group: "elasticsearch"
+
+# Basic cluster settings
+clustername:              "cluster_dc1_dev"
+path_data:                "/var/lib/elasticsearch"
+path_logs:                "/var/log/elasticsearch"
+
+# Master node majority
+discovery_zen_minimum_master_nodes: 2
+
+# Setting default licensetype to trial, meaning that initial cluster license will be TRIAL instead of BASIC
+xpack_license_self_generated_type: trial
+
+# bootstrap_memory_lock setting to false for use in development system
+# in production this must be set to "true"
+bootstrap_memory_lock:    "false"
+
+# Define list of MASTER nodes
+es_network_hosts:         "{{ groups['es_masternodes'] | to_json }}"
+
+# Define interface and IP adress where the various daemon processes will listen
+es_service_interface: "eth1"
+es_service_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + es_service_interface].ipv4.address }}"
+
+# jvm.options
+# please adjust to values suitable for your production system!
+jvm_initial_heap_size:   "512m"
+jvm_maximum_heap_size:   "512m"
+
+# Wait timeout for Elastic port 9200 to become available
+wait_for_timeout: 180
+
+# Native accounts
 password_kibana:                "kibana"
-#password_logstash_system:       "logstash"
+password_logstash_system:       "logstash"
 password_beats_system:          "ebeats"
 password_elastic:               "elastic"
+
+### Useraccounts in filerealm!
+username_es_administrator: "es_administrator"
+password_es_administrator: "es_administrator"

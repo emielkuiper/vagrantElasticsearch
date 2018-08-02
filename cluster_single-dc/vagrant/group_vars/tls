@@ -1,0 +1,13 @@
+###
+### TLS parameters
+###
+
+# zip archive name with P12 file
+elastic_ca_archive_name: "elasticstack"
+elastic_ca_password: "1234"
+
+# TLS keystore parameters
+xpack_security_transport_ssl_enabled: true
+xpack_security_transport_ssl_verification_mode: certificate
+xpack_security_transport_ssl_keystore_path: /etc/elasticsearch/ca/elasticstack/elasticstack.p12
+xpack_security_transport_ssl_truststore_path: /etc/elasticsearch/ca/elasticstack/elasticstack.p12

@@ -1,0 +1,34 @@
+# Username and password that Logstash uses to authenticate againts the Elasticsearch client node APIs
+# Temporarily using elastic user credentials, due to permission errors for out-of-the-box logstash_system role
+es_logstash_username:           "elastic"
+password_logstash_system:       "elastic"
+
+
+###
+### Specifics for Logstash nodes
+###
+
+es_logstash_hosts:         "{{ groups['es_logstashnodes'] | to_json }}"
+
+logstash_listen_port_filebeat: 5401
+logstash_listen_port_metricbeat: 5402
+logstash_listen_port_packetbeat: 5403
+logstash_listen_port_heartbeat: 5404
+
+# Logstash DC identifier used for Elastic indices naming scheme!
+# This value will be PREFIXED to all indices generated.
+# Example: dc1-filebeat-*
+logstash_datacenter: "dc1"
+
+# Logstash pipeline definitions
+pipeline_filebeat_workers: "1"
+pipeline_metricbeat_workers: "1"
+pipeline_packetbeat_workers: "1"
+pipeline_heartbeat_workers: "1"
+pipeline_filebeat_queue: "persisted"
+pipeline_metricbeat_queue: "persisted"
+pipeline_packetbeat_queue: "persisted"
+pipeline_heartbeat_queue: "persisted"
+
+es_data_ports:         "9200"
+es_data_hosts:         "{{ groups['es_datanodes'] | to_json }}"

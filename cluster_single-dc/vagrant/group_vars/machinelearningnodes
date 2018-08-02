@@ -1,0 +1,11 @@
+# To create dedicated machinelearningnode node when X-Pack is installed, set:
+node_master:       false
+node_data:         false
+node_ingest:       false
+search_remote_connect: false
+node_ml:           true
+xpack_ml_enabled:  true
+xpack_security_enabled: yes
+
+# monitoring
+xpack_monitoring_collection_enabled: "true"

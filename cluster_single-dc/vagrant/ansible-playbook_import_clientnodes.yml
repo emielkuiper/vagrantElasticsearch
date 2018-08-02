@@ -10,65 +10,10 @@
   become_method: sudo
   gather_facts:  true
 
-  vars:
-
-    # Basic settings
-    clustername:              "cluster_dc1_dev"
-    path_data:                "/var/lib/elasticsearch"
-    path_logs:                "/var/log/elasticsearch"
-
-    # Setting default licensetype to trial, meaning that initial cluster license will be TRIAL instead of BASIC
-    xpack_license_self_generated_type: trial
-
-    # bootstrap_memory_lock setting to false for use in development system
-    bootstrap_memory_lock:    "false"
-    es_network_hosts:         "{{ groups['es_masternodes'] | to_json }}"
-    es_service_interface: "eth1"
-    es_service_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + es_service_interface].ipv4.address }}"
-
-    # To create a dedicated master-eligible node when X-Pack is installed, set:
-    node_master:       false
-    node_data:         false
-    node_ingest:       false
-    node_ml:           false
-    xpack_security_enabled: yes
-
-    # Master node majority
-    discovery_zen_minimum_master_nodes: 2
-
-    # Ownership and permissions for configfiles
-    owner: "root"
-    group: "elasticsearch"
-
-    # TLS parameters
-    # zip archive name with P12 file
-    elastic_ca_archive_name: "elasticstack"
-    elastic_ca_password: "1234"
-
-    xpack_security_transport_ssl_enabled: true
-    xpack_security_transport_ssl_verification_mode: certificate
-    xpack_security_transport_ssl_keystore_path: /etc/elasticsearch/ca/elasticstack/elasticstack.p12
-    xpack_security_transport_ssl_truststore_path: /etc/elasticsearch/ca/elasticstack/elasticstack.p12
-
-    # jvm.options
-    jvm_initial_heap_size:   "512m"
-    jvm_maximum_heap_size:   "512m"
-
-    ### Wait timeout for Elastic port 9200 to become available
-    wait_for_timeout: 180
-
-    ### Useraccounts in filerealm!
-    username_es_administrator: "es_administrator"
-    password_es_administrator: "es_administrator"
-
-    ### Native accounts
-    password_kibana:                "kibana"
-    password_logstash_system:       "logstash"
-    password_beats_system:          "ebeats"
-    password_elastic:               "elastic"
-
-    # monitoring
-    xpack_monitoring_collection_enabled: "true"
+  vars_files:
+  - group_vars/all
+  - group_vars/clientnodes
+  - group_vars/tls
 
 
   roles:
