@@ -118,3 +118,10 @@
     tags:
       - metricbeat-start
       - metricbeat
+
+  - name: restart metricbeat
+    notify:
+      - restart metricbeat
+    tags:
+      - metricbeat-restart
+      - metricbeat
