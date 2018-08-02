@@ -12,21 +12,9 @@
   become_method: sudo
   gather_facts:  true
 
-  vars:
-
-    # Ownership and permissions for configfiles
-    owner: "root"
-    group: "elasticsearch"
-
-    # TLS parameters
-    #
-    # zip archive name with P12 file
-    elastic_ca_archive_name: "elasticstack"
-    elastic_ca_password: "1234"
-
-    ### Useraccounts in filerealm!
-    username_es_administrator: "es_administrator"
-    password_es_administrator: "es_administrator"
+  vars_files:
+  - group_vars/all
+  - group_vars/tls
 
   roles:
     # Set up TLS for transport protocol on ALL cluster nodes

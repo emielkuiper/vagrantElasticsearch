@@ -1,0 +1,9 @@
+# To create a dedicated client node when X-Pack is installed, set:
+node_master:       false
+node_data:         false
+node_ingest:       false
+node_ml:           false
+xpack_security_enabled: yes
+
+# monitoring
+xpack_monitoring_collection_enabled: "true"
