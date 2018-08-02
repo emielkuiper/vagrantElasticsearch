@@ -1,27 +1,27 @@
 [es_masternodes]
-172.28.129.100 ansible_host=172.28.129.100 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-172.28.129.101 ansible_host=172.28.129.101 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-172.28.129.102 ansible_host=172.28.129.102 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.28.129.100 ansible_host=172.28.129.100 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-master-01'
+172.28.129.101 ansible_host=172.28.129.101 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-master-02'
+172.28.129.102 ansible_host=172.28.129.102 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-master-03'
 
 [es_datanodes]
-172.28.129.103 ansible_host=172.28.129.103 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-172.28.129.104 ansible_host=172.28.129.104 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-172.28.129.105 ansible_host=172.28.129.105 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-172.28.129.106 ansible_host=172.28.129.106 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.28.129.103 ansible_host=172.28.129.103 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-data-01'
+172.28.129.104 ansible_host=172.28.129.104 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-data-02'
+172.28.129.105 ansible_host=172.28.129.105 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-data-03'
+172.28.129.106 ansible_host=172.28.129.106 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-data-04'
 
 [es_logstashnodes]
-172.28.129.107 ansible_host=172.28.129.107 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' logstash_datacenter='dc1'
-172.28.129.110 ansible_host=172.28.129.110 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' logstash_datacenter='dc1'
+172.28.129.107 ansible_host=172.28.129.107 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' logstash_datacenter='dc1' HOSTNAME='es-logstash-01'
+172.28.129.110 ansible_host=172.28.129.110 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' logstash_datacenter='dc1' HOSTNAME='es-logstash-02'
 
 [es_kibananodes]
-172.28.129.108 ansible_host=172.28.129.108 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.28.129.108 ansible_host=172.28.129.108 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-kibana-01'
 
 [es_clientnodes]
-172.28.129.109 ansible_host=172.28.129.109 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.28.129.109 ansible_host=172.28.129.109 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-client-01'
 
 [es_machinelearningnodes]
-172.28.129.111 ansible_host=172.28.129.111 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-172.28.129.112 ansible_host=172.28.129.112 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.28.129.111 ansible_host=172.28.129.111 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-machinelearning-01'
+172.28.129.112 ansible_host=172.28.129.112 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-machinelearning-02'
 
 [es_beats:children]
 es_masternodes

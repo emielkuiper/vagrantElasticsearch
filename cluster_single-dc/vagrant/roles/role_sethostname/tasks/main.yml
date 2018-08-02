@@ -1,0 +1,9 @@
+#####
+##### Setting hostname
+#####
+
+  - name: Setting hostname based on variable in inventory
+    hostname:
+      name: "{{ HOSTNAME }}"
+    tags:
+      - set-hostname
