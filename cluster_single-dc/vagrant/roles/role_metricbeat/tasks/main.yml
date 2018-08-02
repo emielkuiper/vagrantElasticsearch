@@ -109,7 +109,7 @@
   - name: Start and enable Metricbeat at boot time
     service:
       name: "{{ item }}"
-      state: started
+      state: restarted
       enabled: True
     with_items:
       - metricbeat
@@ -119,10 +119,10 @@
       - metricbeat-start
       - metricbeat
 
-  - name: restart metricbeat
-    service:
-     name: metricbeat
-     state: restarted
-    tags:
-      - metricbeat-restart
-      - metricbeat
+  # - name: restart metricbeat
+  #   service:
+  #    name: metricbeat
+  #    state: restarted
+  #   tags:
+  #     - metricbeat-restart
+  #     - metricbeat
