@@ -17,6 +17,24 @@
       - filebeat-modules
       - filebeat
 
+###
+### Filebeat config file
+###
+
+  - name: Templating Filebeat config file
+    template:
+      src: templates/filebeat.yml.j2
+      dest: "/etc/filebeat/filebeat.yml"
+      mode: 0750
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    notify:
+      - restart filebeat
+    when:
+      - inventory_hostname in groups['es_beats']
+    tags:
+      - filebeat-configfiles
+      - filebeat
 
 # Enable filebeat modules
   - name: Enable generic filebeat modules
@@ -46,33 +64,13 @@
 
 
 ###
-### Filebeat config file
-###
-
-  - name: Templating Filebeat config file
-    template:
-      src: templates/filebeat.yml.j2
-      dest: "/etc/filebeat/filebeat.yml"
-      mode: 0750
-      owner: "{{ owner }}"
-      group: "{{ group }}"
-    notify:
-      - restart filebeat
-    when:
-      - inventory_hostname in groups['es_beats']
-    tags:
-      - filebeat-configfiles
-      - filebeat
-
-
-###
 ### Start Filebeat at boot time
 ###
 
   - name: Start and enable Filebeat at boot time
     service:
       name: "{{ item }}"
-      state: started
+      state: restarted
       enabled: True
     with_items:
       - filebeat
