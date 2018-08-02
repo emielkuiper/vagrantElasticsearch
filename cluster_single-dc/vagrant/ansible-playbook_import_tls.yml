@@ -1,8 +1,5 @@
 ###
-### Set up the following:
-### * TLS: on ALL nodes that are part of the cluster
-### * FILE realm:  administrator users on ALL nodes part of the cluster
-###                (create users and users_roles files only, )
+### Set up TLS!
 ###
 
 - hosts:         es_masternodes, es_datanodes, es_clientnodes, es_machinelearningnodes
