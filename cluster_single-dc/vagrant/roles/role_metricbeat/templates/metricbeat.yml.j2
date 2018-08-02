@@ -17,14 +17,14 @@ metricbeat.config.modules:
   path: ${path.config}/conf.d/*.yml
 
   # Period on which files under path should be checked for changes
-  reload.period: 10s
+  # reload.period: 10s
 
   # Set to true to enable config reloading
   reload.enabled: false
 
 # Maximum amount of time to randomly delay the start of a metricset. Use 0 to
 # disable startup delay.
-metricbeat.max_start_delay: 10s
+# metricbeat.max_start_delay: 10s
 
 #============================== Autodiscover ===================================
 
@@ -45,31 +45,31 @@ metricbeat.max_start_delay: 10s
 #              hosts: ["${host}:2379"]
 
 #==========================  Modules configuration ============================
-metricbeat.modules:
+# metricbeat.modules:
 
 #------------------------------- System Module -------------------------------
-- module: system
-  metricsets:
-    - cpu             # CPU usage
-    - filesystem      # File system usage for each mountpoint
-    - fsstat          # File system summary metrics
-    - load            # CPU load averages
-    - memory          # Memory usage
-    - network         # Network IO
-    - process         # Per process metrics
-    - process_summary # Process summary
-    - uptime          # System Uptime
-    #- core           # Per CPU core usage
-    #- diskio         # Disk IO
-    #- raid           # Raid
-    #- socket         # Sockets and connection info (linux only)
-  enabled: true
-  period: 10s
-  processes: ['.*']
-
-  # Configure the metric types that are included by these metricsets.
-  cpu.metrics:  ["percentages"]  # The other available options are normalized_percentages and ticks.
-  core.metrics: ["percentages"]  # The other available option is ticks.
+# - module: system
+#   metricsets:
+#     - cpu             # CPU usage
+#     - filesystem      # File system usage for each mountpoint
+#     - fsstat          # File system summary metrics
+#     - load            # CPU load averages
+#     - memory          # Memory usage
+#     - network         # Network IO
+#     - process         # Per process metrics
+#     - process_summary # Process summary
+#     - uptime          # System Uptime
+#     #- core           # Per CPU core usage
+#     #- diskio         # Disk IO
+#     #- raid           # Raid
+#     #- socket         # Sockets and connection info (linux only)
+#   enabled: true
+#   period: 10s
+#   processes: ['.*']
+#
+#   # Configure the metric types that are included by these metricsets.
+#   cpu.metrics:  ["percentages"]  # The other available options are normalized_percentages and ticks.
+#   core.metrics: ["percentages"]  # The other available option is ticks.
 
   # A list of filesystem types to ignore. The filesystem metricset will not
   # collect data from filesystems matching any of the specified types, and
