@@ -14,5 +14,5 @@
   - group_vars/logstashnodes
 
   roles:
-    - role: role_metricbeats
-    - role: role_filebeats
+    - role: role_metricbeat
+    - role: role_filebeat
