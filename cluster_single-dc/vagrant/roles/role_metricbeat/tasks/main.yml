@@ -37,6 +37,20 @@
       - metricbeat-configfiles
       - metricbeat
 
+  - name: Templating Metric system conf.d
+    template:
+      src: templates/system.yml.j2
+      dest: "/etc/metricbeat/modules.d/system.yml"
+      mode: 0750
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    notify:
+      - restart metricbeat
+    when:
+      - inventory_hostname in groups['es_beats']
+    tags:
+      - metricbeat-configfiles
+      - metricbeat
 
 # Enable metricbeat modules
   - name: Enable generic metricbeat modules
