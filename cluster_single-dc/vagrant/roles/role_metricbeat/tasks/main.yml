@@ -120,8 +120,9 @@
       - metricbeat
 
   - name: restart metricbeat
-    notify:
-      - restart metricbeat
+    service:
+     name: metricbeat
+     state: restarted
     tags:
       - metricbeat-restart
       - metricbeat
