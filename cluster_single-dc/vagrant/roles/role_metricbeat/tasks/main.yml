@@ -7,16 +7,16 @@
 
 # It can happen that services are restarted too often, requiring a reset
  #RESET service metricbeat
-#  - name: RESET failed beat services
-#    command: "systemctl reset-failed {{ item }}.service"
-#    with_items:
-#      - metricbeat
-#    when:
-#      - inventory_hostname in groups['es_beats']
-#    ignore_errors: true
-#    tags:
-#      - metricbeat-modules
-#      - metricbeat
+ - name: RESET failed beat services
+   command: "systemctl reset-failed {{ item }}.service"
+   with_items:
+     - metricbeat
+   when:
+     - inventory_hostname in groups['es_beats']
+   ignore_errors: true
+   tags:
+     - metricbeat-modules
+     - metricbeat
 
 ###
 ### Metricbeat config file
