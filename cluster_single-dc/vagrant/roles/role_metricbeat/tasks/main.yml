@@ -1,0 +1,105 @@
+############################ METRICBEAT ###########################
+###
+### Metricbeat modules
+###
+
+
+
+# It can happen that services are restarted too often, requiring a reset
+ #RESET service metricbeat
+  - name: RESET failed beat services
+    command: "systemctl reset-failed {{ item }}.service"
+    with_items:
+      - metricbeat
+    when:
+      - inventory_hostname in groups['es_beats']
+    ignore_errors: true
+    tags:
+      - metricbeat-modules
+      - metricbeat
+
+
+# Enable metricbeat modules
+  - name: Enable generic metricbeat modules
+    command: /usr/bin/metricbeat modules enable {{ item }}
+    with_items:
+      - system
+    when:
+      - inventory_hostname in groups['es_beats']
+    ignore_errors: true
+    tags:
+      - metricbeat-modules
+      - metricbeat
+
+## Enable metricbeat logstash modules
+  - name: Enable logstash metricbeat module on logstash nodes
+    command: /usr/bin/metricbeat modules enable {{ item }}
+    with_items:
+      - logstash
+    when:
+      - inventory_hostname in groups['es_beats']
+      - inventory_hostname in groups['es_logstashnodes']
+    ignore_errors: true
+    tags:
+      - metricbeat-modules
+      - metricbeat
+
+## Enable metricbeat elasticsearch modules
+  - name: Enable elasticsearch metricbeat module on logstash nodes
+    command: /usr/bin/metricbeat modules enable {{ item }}
+    with_items:
+      - elasticsearch
+    when:
+      - inventory_hostname in groups['es_beats']
+      - inventory_hostname in groups['es_allelasticnodes']
+    tags:
+      - metricbeat-modules
+      - metricbeat
+
+## Enable kibana elasticsearch modules
+  - name: Enable elasticsearch metricbeat module on logstash nodes
+    command: /usr/bin/metricbeat modules enable {{ item }}
+    with_items:
+      - kibana
+    when:
+      - inventory_hostname in groups['es_beats']
+      - inventory_hostname in groups['es_kibananodes']
+    tags:
+      - metricbeat-modules
+      - metricbeat
+
+###
+### Metricbeat config file
+###
+
+  - name: Templating Metric config file
+    template:
+      src: templates/metricbeat.yml.j2
+      dest: "/etc/metricbeat/metricbeat.yml"
+      mode: 0750
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+    notify:
+      - restart metricbeat
+    when:
+      - inventory_hostname in groups['es_beats']
+    tags:
+      - metricbeat-configfiles
+      - metricbeat
+
+###
+### Start beats at boot time
+###
+
+  - name: Start and enable Metricbeat at boot time
+    service:
+      name: "{{ item }}"
+      state: started
+      enabled: True
+    with_items:
+      - metricbeat
+    when:
+      - inventory_hostname in groups['es_beats']
+    tags:
+      - metricbeat-start
+      - metricbeat
