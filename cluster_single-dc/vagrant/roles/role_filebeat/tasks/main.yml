@@ -3,7 +3,28 @@
 ### Filebeat modules
 ###
 
+###
+### Add repo if we can connect to the internet
+###
 
+  - name: Add Elasticsearch repo
+    yum_repository:
+      name: Elasticsearch repository for 6.x package
+      description: Elasticsearch repo
+      baseurl: https://artifacts.elastic.co/packages/6.x/yum
+      gpgcheck: 1
+      gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      enabled: 1
+    when: es_use_repository
+
+###
+### Elasticsearch installation
+###
+  - name: install filebeat
+    yum:
+      name: filebeat
+      state: present
+    notify: restart filebeat
 
 # It can happen that services are restarted too often, requiring a reset
  #RESET service filebeat
@@ -63,6 +84,7 @@
       - filebeat
 
 
+
 ###
 ### Start Filebeat at boot time
 ###
@@ -70,12 +92,14 @@
   - name: Start and enable Filebeat at boot time
     service:
       name: "{{ item }}"
-      state: restarted
+      state: started
       enabled: True
     with_items:
       - filebeat
     when:
       - inventory_hostname in groups['es_beats']
+    notify:
+      - restart filebeat
     tags:
       - filebeat-start
       - filebeat
