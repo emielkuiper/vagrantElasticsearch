@@ -12,6 +12,9 @@ clustername:              "cluster_dc1_dev"
 path_data:                "/var/lib/elasticsearch"
 path_logs:                "/var/log/elasticsearch"
 
+# Flag to enable the elasticsearch repo (only set to true on a machine with internet access)
+es_use_repository:      true
+
 # Master node majority
 discovery_zen_minimum_master_nodes: 2
 
