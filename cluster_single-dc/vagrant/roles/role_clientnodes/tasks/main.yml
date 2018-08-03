@@ -13,23 +13,23 @@
 ### Add repo if we can connect to the internet
 ###
 
-- name: Add Elasticsearch repo
-  yum_repository:
-    name: Elasticsearch repository for 6.x package
-    baseurl: https://artifacts.elastic.co/packages/6.x/yum
-    gpgcheck: 1
-    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    enabled: 1
-  when: es_use_repository
+  - name: Add Elasticsearch repo
+    yum_repository:
+      name: Elasticsearch repository for 6.x package
+      baseurl: https://artifacts.elastic.co/packages/6.x/yum
+      gpgcheck: 1
+      gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      enabled: 1
+    when: es_use_repository
 
 ###
 ### Elasticsearch installation
 ###
-- name: install Elasticsearch
-  yum:
-    name: elasticsearch-6.3.1
-    state: present
-  notify: restart elasticsearch
+  - name: install Elasticsearch
+    yum:
+      name: elasticsearch-6.3.1
+      state: present
+    notify: restart elasticsearch
 
 ###
 ### Elasticsearch config file
