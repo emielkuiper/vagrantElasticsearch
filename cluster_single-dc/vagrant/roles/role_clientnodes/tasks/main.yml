@@ -28,7 +28,7 @@
 ###
   - name: install Elasticsearch
     yum:
-      name: elasticsearch-6.3.1
+      name: elasticsearch-{{ es_version }}
       state: present
     notify: restart elasticsearch
 
