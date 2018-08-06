@@ -139,11 +139,3 @@
     tags:
       - metricbeat-start
       - metricbeat
-
-  # - name: restart metricbeat
-  #   service:
-  #    name: metricbeat
-  #    state: restarted
-  #   tags:
-  #     - metricbeat-restart
-  #     - metricbeat

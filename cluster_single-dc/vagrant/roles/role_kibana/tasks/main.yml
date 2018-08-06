@@ -1,4 +1,27 @@
 ###
+### Add repo if we can connect to the internet
+###
+
+  - name: Add Elasticsearch repo
+    yum_repository:
+      name: Elasticsearch repository for 6.x package
+      description: Elasticsearch repo
+      baseurl: https://artifacts.elastic.co/packages/6.x/yum
+      gpgcheck: 1
+      gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      enabled: 1
+    when: es_use_repository
+
+###
+### Elasticsearch installation
+###
+  - name: install Kibana
+    yum:
+      name: kibana
+      state: present
+    notify: restart kibana
+
+###
 ### Kibana config file
 ###
 
