@@ -19,9 +19,9 @@
 [es_clientnodes]
 172.28.129.109 ansible_host=172.28.129.109 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-client-01'
 
-[es_machinelearningnodes]
-172.28.129.111 ansible_host=172.28.129.111 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-machinelearning-01'
-172.28.129.112 ansible_host=172.28.129.112 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-machinelearning-02'
+#[es_machinelearningnodes]
+#172.28.129.111 ansible_host=172.28.129.111 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-machinelearning-01'
+#172.28.129.112 ansible_host=172.28.129.112 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/boxes/oraclelinuxworld-VAGRANTSLASH-base_elasticsearch/0.2/virtualbox/vagrant_private_key' ansible_ssh_common_args='-o StrictHostKeyChecking=no' HOSTNAME='es-machinelearning-02'
 
 [es_beats:children]
 es_masternodes
@@ -29,10 +29,10 @@ es_datanodes
 es_logstashnodes
 es_kibananodes
 es_clientnodes
-es_machinelearningnodes
+#es_machinelearningnodes
 
 [es_allelasticnodes:children]
 es_masternodes
 es_datanodes
 es_clientnodes
-es_machinelearningnodes
+#es_machinelearningnodes

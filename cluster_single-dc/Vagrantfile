@@ -215,33 +215,33 @@ Vagrant.configure("2") do |config|
   ### Define 2x Machine Learning node
   ###
 
-  config.vm.define "dc1_es_machinelearning_01" do |dc1_es_machinelearning_01|
-    dc1_es_machinelearning_01.vm.synced_folder "./vagrant", "/vagrant"
-    dc1_es_machinelearning_01.vm.box = "oraclelinuxworld/base_elasticsearch"
-    dc1_es_machinelearning_01.vm.network :"private_network", ip: "172.28.129.111", auto_config: true
-    dc1_es_machinelearning_01.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 1024]
-      v.customize ["modifyvm", :id, "--cpus", "2"]
-      v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
-      v.customize ["modifyvm", :id, "--usb", "off"]
-      v.customize ["modifyvm", :id, "--audio", "none"]
-      v.customize ["modifyvm", :id, "--name", "dc1_es_machinelearning_01"]
-    end # End of "dc1_es_machinelearning_01.vm.provider"
-  end   # End of config.vm.define "dc1_es_machinelearning_01"
-
-  config.vm.define "dc1_es_machinelearning_02" do |dc1_es_machinelearning_02|
-    dc1_es_machinelearning_02.vm.synced_folder "./vagrant", "/vagrant"
-    dc1_es_machinelearning_02.vm.box = "oraclelinuxworld/base_elasticsearch"
-    dc1_es_machinelearning_02.vm.network :"private_network", ip: "172.28.129.112", auto_config: true
-    dc1_es_machinelearning_02.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 1024]
-      v.customize ["modifyvm", :id, "--cpus", "2"]
-      v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
-      v.customize ["modifyvm", :id, "--usb", "off"]
-      v.customize ["modifyvm", :id, "--audio", "none"]
-      v.customize ["modifyvm", :id, "--name", "dc1_es_machinelearning_02"]
-    end # End of "dc1_es_machinelearning_02.vm.provider"
-  end   # End of config.vm.define "dc1_es_machinelearning_02"
+  # config.vm.define "dc1_es_machinelearning_01" do |dc1_es_machinelearning_01|
+  #   dc1_es_machinelearning_01.vm.synced_folder "./vagrant", "/vagrant"
+  #   dc1_es_machinelearning_01.vm.box = "oraclelinuxworld/base_elasticsearch"
+  #   dc1_es_machinelearning_01.vm.network :"private_network", ip: "172.28.129.111", auto_config: true
+  #   dc1_es_machinelearning_01.vm.provider :virtualbox do |v|
+  #     v.customize ["modifyvm", :id, "--memory", 1024]
+  #     v.customize ["modifyvm", :id, "--cpus", "2"]
+  #     v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+  #     v.customize ["modifyvm", :id, "--usb", "off"]
+  #     v.customize ["modifyvm", :id, "--audio", "none"]
+  #     v.customize ["modifyvm", :id, "--name", "dc1_es_machinelearning_01"]
+  #   end # End of "dc1_es_machinelearning_01.vm.provider"
+  # end   # End of config.vm.define "dc1_es_machinelearning_01"
+  #
+  # config.vm.define "dc1_es_machinelearning_02" do |dc1_es_machinelearning_02|
+  #   dc1_es_machinelearning_02.vm.synced_folder "./vagrant", "/vagrant"
+  #   dc1_es_machinelearning_02.vm.box = "oraclelinuxworld/base_elasticsearch"
+  #   dc1_es_machinelearning_02.vm.network :"private_network", ip: "172.28.129.112", auto_config: true
+  #   dc1_es_machinelearning_02.vm.provider :virtualbox do |v|
+  #     v.customize ["modifyvm", :id, "--memory", 1024]
+  #     v.customize ["modifyvm", :id, "--cpus", "2"]
+  #     v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+  #     v.customize ["modifyvm", :id, "--usb", "off"]
+  #     v.customize ["modifyvm", :id, "--audio", "none"]
+  #     v.customize ["modifyvm", :id, "--name", "dc1_es_machinelearning_02"]
+  #   end # End of "dc1_es_machinelearning_02.vm.provider"
+  # end   # End of config.vm.define "dc1_es_machinelearning_02"
 
 
 end       # End of "Vagrant.configure"

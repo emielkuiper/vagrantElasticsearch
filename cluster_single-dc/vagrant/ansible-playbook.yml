@@ -41,9 +41,9 @@
 
 
 # 7) Deployment of machine learning nodes
-- import_playbook: ansible-playbook_import_machinelearningnodes.yml
-  tags:
-    - machinelearningnodes
+# - import_playbook: ansible-playbook_import_machinelearningnodes.yml
+#   tags:
+#     - machinelearningnodes
 
 
 # 8) Deployment of beats
