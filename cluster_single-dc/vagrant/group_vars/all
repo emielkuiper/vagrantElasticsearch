@@ -22,7 +22,7 @@ es_version:             6.3.1
 discovery_zen_minimum_master_nodes: 2
 
 # Setting default licensetype to trial, meaning that initial cluster license will be TRIAL instead of BASIC
-xpack_license_self_generated_type: trial
+xpack_license_self_generated_type: basic
 
 # bootstrap_memory_lock setting to false for use in development system
 # in production this must be set to "true"
