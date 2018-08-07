@@ -26,10 +26,6 @@
       state: present
     notify: restart filebeat
 
-  - name: Check if beat Service Exists
-    stat: path=/etc/init.d/filebeat
-    register: service_status
-
 # It can happen that services are restarted too often, requiring a reset
  #RESET service filebeat
   - name: RESET failed beat services
@@ -38,7 +34,7 @@
       - filebeat
     when:
       - inventory_hostname in groups['es_beats']
-      - service_status.stat.exists
+    ignore_errors: yes
     tags:
       - filebeat-modules
       - filebeat
