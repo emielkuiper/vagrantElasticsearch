@@ -95,180 +95,180 @@
 ### Check to see if users are already required to authenticate!
 ### Aka: is it necessary to perform actions on internal user passwords
 
-  - name: Check to see if password authentication on FILE realm is OK
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_cat/master
-      method: GET
-      body_format: json
-      return_content: yes
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: cn_xpack_es_administrator_auth
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-    tags:
-      - xpack-license
-      - xpack-test
-      - xpack-pw
-
-
-  - name: Check to see if password authentication on NATIVE realm is OK
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_cat/master
-      method: GET
-      body_format: json
-      return_content: yes
-      status_code: 200
-      user: "elastic"
-      password: "{{ password_elastic }}"
-      force_basic_auth: yes
-    register: cn_xpack_elastic_auth
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-    tags:
-      - xpack-license
-      - xpack-test
-      - xpack-pw
-
-#  - name: Debug message on user auth results
-#    debug:
-#      msg: "NATIVE realm authentication for user elastic with password FAILED."
-#    when:
-#    - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#    - cn_xpack_es_administrator_auth.json.error.reason == 'failed to authenticate user [********]'
-#    tags:
-#      - xpack-pw
-#      - xpack-test
-
-################################################################################
-
-
-###
-### Setting passwords for all native users: elastic, kibana, logstash_system and beats_system
-###
-
-  - name: Setting password for user elastic using FILE realm ADMINISTRATOR
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/elastic/_password
-      method: PUT
-      body_format: json
-      return_content: yes
-      body: "{ \"password\":\"{{ password_elastic }}\" }"
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: xpack_elastic_password_reset
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-
-
-  - name: Setting password for user kibana using FILE realm ADMINISTRATOR
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/kibana/_password
-      method: PUT
-      body_format: json
-      return_content: yes
-      body: "{ \"password\":\"{{ password_kibana }}\" }"
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: xpack_kibana_password_reset
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-
-
-  - name: Setting password for user logstash_system using FILE realm ADMINISTRATOR
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/logstash_system/_password
-      method: PUT
-      body_format: json
-      return_content: yes
-      body: "{ \"password\":\"{{ password_logstash_system }}\" }"
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: xpack_logstash_password_reset
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-
-
-  - name: Setting password for user beats_system using FILE realm ADMINISTRATOR
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/beats_system/_password
-      method: PUT
-      body_format: json
-      return_content: yes
-      body: "{ \"password\":\"{{ password_beats_system }}\" }"
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: xpack_beats_password_reset
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-
-
-
-###
-### Adding additional user kibana_extended and role kibana_system_extended
-### Because privileges are missing from the default install
-###
-
-  - name: Creating additional role kibana_system_extended using FILE realm ADMINISTRATOR
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_xpack/security/role/kibana_system_extended
-      method: PUT
-      body_format: json
-      return_content: yes
-      body: "{{ lookup('file','role_kibana_system_extended.json') }}"
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: xpack_create_role
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-#      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-    tags:
-      - kibana_user
-
-  - name: Creating additional user kibana_extended using FILE realm ADMINISTRATOR
-    uri:
-      url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/kibana_extended
-      method: PUT
-      body_format: json
-      return_content: yes
-      body: "{{ lookup('file','user_kibana_extended.json') }}"
-      status_code: 200
-      user: "{{ username_es_administrator }}"
-      password: "{{ password_es_administrator }}"
-      force_basic_auth: yes
-    register: xpack_create_user
-    ignore_errors: yes
-    when:
-      - inventory_hostname == groups['es_clientnodes'][0]
-#      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
-#      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
-    tags:
-      - kibana_user
+#   - name: Check to see if password authentication on FILE realm is OK
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_cat/master
+#       method: GET
+#       body_format: json
+#       return_content: yes
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: cn_xpack_es_administrator_auth
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+#     tags:
+#       - xpack-license
+#       - xpack-test
+#       - xpack-pw
+#
+#
+#   - name: Check to see if password authentication on NATIVE realm is OK
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_cat/master
+#       method: GET
+#       body_format: json
+#       return_content: yes
+#       status_code: 200
+#       user: "elastic"
+#       password: "{{ password_elastic }}"
+#       force_basic_auth: yes
+#     register: cn_xpack_elastic_auth
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+#     tags:
+#       - xpack-license
+#       - xpack-test
+#       - xpack-pw
+#
+# #  - name: Debug message on user auth results
+# #    debug:
+# #      msg: "NATIVE realm authentication for user elastic with password FAILED."
+# #    when:
+# #    - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #    - cn_xpack_es_administrator_auth.json.error.reason == 'failed to authenticate user [********]'
+# #    tags:
+# #      - xpack-pw
+# #      - xpack-test
+#
+# ################################################################################
+#
+#
+# ###
+# ### Setting passwords for all native users: elastic, kibana, logstash_system and beats_system
+# ###
+#
+#   - name: Setting password for user elastic using FILE realm ADMINISTRATOR
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/elastic/_password
+#       method: PUT
+#       body_format: json
+#       return_content: yes
+#       body: "{ \"password\":\"{{ password_elastic }}\" }"
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: xpack_elastic_password_reset
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+#       - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+#
+#
+#   - name: Setting password for user kibana using FILE realm ADMINISTRATOR
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/kibana/_password
+#       method: PUT
+#       body_format: json
+#       return_content: yes
+#       body: "{ \"password\":\"{{ password_kibana }}\" }"
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: xpack_kibana_password_reset
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+#       - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+#
+#
+#   - name: Setting password for user logstash_system using FILE realm ADMINISTRATOR
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/logstash_system/_password
+#       method: PUT
+#       body_format: json
+#       return_content: yes
+#       body: "{ \"password\":\"{{ password_logstash_system }}\" }"
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: xpack_logstash_password_reset
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+#       - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+#
+#
+#   - name: Setting password for user beats_system using FILE realm ADMINISTRATOR
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/beats_system/_password
+#       method: PUT
+#       body_format: json
+#       return_content: yes
+#       body: "{ \"password\":\"{{ password_beats_system }}\" }"
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: xpack_beats_password_reset
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+#       - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+#
+#
+#
+# ###
+# ### Adding additional user kibana_extended and role kibana_system_extended
+# ### Because privileges are missing from the default install
+# ###
+#
+#   - name: Creating additional role kibana_system_extended using FILE realm ADMINISTRATOR
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_xpack/security/role/kibana_system_extended
+#       method: PUT
+#       body_format: json
+#       return_content: yes
+#       body: "{{ lookup('file','role_kibana_system_extended.json') }}"
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: xpack_create_role
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+# #      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+#     tags:
+#       - kibana_user
+#
+#   - name: Creating additional user kibana_extended using FILE realm ADMINISTRATOR
+#     uri:
+#       url: http://{{ es_service_ip_address }}:9200/_xpack/security/user/kibana_extended
+#       method: PUT
+#       body_format: json
+#       return_content: yes
+#       body: "{{ lookup('file','user_kibana_extended.json') }}"
+#       status_code: 200
+#       user: "{{ username_es_administrator }}"
+#       password: "{{ password_es_administrator }}"
+#       force_basic_auth: yes
+#     register: xpack_create_user
+#     ignore_errors: yes
+#     when:
+#       - inventory_hostname == groups['es_clientnodes'][0]
+# #      - cn_xpack_elastic_auth.json.error.reason == 'failed to authenticate user [********]'
+# #      - cn_xpack_es_administrator_auth.json.error.reason != 'failed to authenticate user [********]'
+#     tags:
+#       - kibana_user
